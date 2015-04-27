@@ -9,20 +9,23 @@ import java.util.Set;
  */
 
 @Entity
-@Table(name = "RS1_SITES")
+@Table(name = "SDB_SITES")
 public class Site {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO, generator="site_id_generator")
-    @SequenceGenerator(name="site_id_generator", sequenceName="SITES_SEQ", allocationSize = 1)
+    @SequenceGenerator(name="site_id_generator", sequenceName="SDB_SITES_SEQ", allocationSize = 1)
     @Column(name = "SITE_ID")
     private long id;
-    @Column(name = "SITE_NAME")
+    @Column(name = "NAME")
     private String name;
     @Column(name = "URL")
     private String url;
+    @Column(name = "DESCRIPTION")
+    private String description;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "RS1_SITES_TAGS", joinColumns = {
+    @JoinTable(name = "SDB_SITES_TAGS", joinColumns = {
             @JoinColumn(name = "SITE_ID", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "TAG_ID", nullable = false, updatable = false
             )})
@@ -66,6 +69,14 @@ public class Site {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

@@ -9,13 +9,13 @@ import java.util.Set;
  */
 
 @Entity
-@Table(name = "RS1_TAGS")
+@Table(name = "SDB_TAGS")
 public class Tag {
 
     @Id
     @Column(name = "TAG_ID")
     @GeneratedValue(strategy=GenerationType.AUTO, generator="tag_id_generator")
-    @SequenceGenerator(name="tag_id_generator", sequenceName="TAGS_SEQ", allocationSize = 1)
+    @SequenceGenerator(name="tag_id_generator", sequenceName="SDB_TAGS_SEQ", allocationSize = 1)
     private long id;
     @Column(name = "NAME")
     private String name;
