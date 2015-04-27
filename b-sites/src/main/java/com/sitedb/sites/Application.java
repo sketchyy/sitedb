@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Application {
 
     public static void main(String[] args) {
+        // Test commit from idea
         SpringApplication.run(Application.class, args);
     }
 
