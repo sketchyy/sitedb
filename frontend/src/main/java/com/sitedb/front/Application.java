@@ -12,7 +12,8 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-        System.out.println("LOLO");
+        System.out.println("LOLO2");
+        System.out.println("LOLO2");
 //        RestTemplate restTemplate = new RestTemplate();
 //        Site page = restTemplate.getForObject("http://localhost:8080/sites/1", Site.class);
 //        System.out.println("Name:    " + page.getName());
