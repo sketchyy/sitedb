@@ -9,6 +9,20 @@
 
 
 <p>Sites</p>
-<p th:text="'Site = ' + ${name} + ' , url = ' + ${url}" />
+
+<table>
+    <tr>
+        <th>NAME</th>
+        <th>URL</th>
+        <th>DESCRIPTION</th>
+    </tr>
+    <tr th:each="s : ${sites}">
+        <td th:text=>${s.name}</td>
+        <td th:text="${s.url}"></td>
+        <td th:text="${s.description}"></td>
+        <td th:text="${s.hrefToFront}"></td>
+
+    </tr>
+</table>
 </body>
 </html>
