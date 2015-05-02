@@ -29,49 +29,45 @@ import java.util.*;
 public class SitesController {
 
     @RequestMapping("/sites")
-    public String sites(@RequestParam(value = "id", required = false ) Integer id, Model model) {
+    public String sites(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                        @RequestParam(value = "size", defaultValue = "10") Integer size,
+                        Model model) {
         RestTemplate restTemplate = restTemplate();
 
-        if (id == null) {
-            ResponseEntity<PagedResources<Resource<Site>>> responseEntity = restTemplate.exchange(
-                    RestURIs.allSitesPaged, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<PagedResources<Resource<Site>>>() {
-                    }, 0 , 1);
+        ResponseEntity<PagedResources<Resource<Site>>> responseEntity = restTemplate.exchange(
+                RestURIs.allSitesPaged, HttpMethod.GET, null,
+                new ParameterizedTypeReference<PagedResources<Resource<Site>>>() {
+                }, page, size);
 
-            System.out.println(responseEntity.getBody());
+        List<Resource<Site>> resSites = new ArrayList(responseEntity.getBody().getContent());
+        List<Site> sites = new ArrayList<>(resSites.size());
 
-            PagedResources<Resource<Site>> resources = responseEntity.getBody();
-            List<Resource<Site>> sites = new ArrayList(responseEntity.getBody().getContent());
-
-            for (Resource<Site> rs : sites) {
-                String href = rs.getLink("self").getHref();
-                rs.getContent().setIdByLink(href);
-            }
-
-            System.out.println(resources.getContent());
-            System.out.println("next " + resources.getNextLink());
-            System.out.println("prev " + resources.getPreviousLink());
-            System.out.println("id " +sites.get(0));
-            System.out.println("id " +sites.get(0).getId().getVariableNames());
-
-            model.addAttribute("sites", sites);
-            return "sites";
-        } else {
-            Map<String, Integer> vars = new HashMap<>();
-            vars.put("siteId", id);
-
-            ResponseEntity<Resource<Site>> res
-                    = restTemplate.exchange(RestURIs.site, HttpMethod.GET, null, new ParameterizedTypeReference<Resource<Site>>() {
-            }, vars);
-            System.out.println("body " + res.getBody());
-            System.out.println("links " + res.getBody().getLinks());
-            System.out.println("content " + res.getBody().getContent());
-
-            Site site = restTemplate.getForObject(RestURIs.site, Site.class, vars);
-
-            model.addAttribute("site", site);
-            return "site";
+        for (Resource<Site> rs : resSites) {
+            String href = rs.getLink("self").getHref();
+            // initialize href to front, not to backend
+            rs.getContent().setIdByLink(href);
+            // and store it with Site
+            sites.add(rs.getContent());
         }
+
+        model.addAttribute("sites", sites);
+        return "sites";
+    }
+
+    @RequestMapping("/site")
+    public String site(@RequestParam(value = "id") Integer id, Model model) {
+        RestTemplate restTemplate = restTemplate();
+
+        Map<String, Integer> vars = new HashMap<>();
+        vars.put("siteId", id);
+
+//        ResponseEntity<Resource<Site>> res
+//                = restTemplate.exchange(RestURIs.site, HttpMethod.GET, null, new ParameterizedTypeReference<Resource<Site>>() {
+//        }, vars);
+
+        Site site = restTemplate.getForObject(RestURIs.site, Site.class, vars);
+        model.addAttribute("site", site);
+        return "site";
     }
 
     private RestTemplate restTemplate() {

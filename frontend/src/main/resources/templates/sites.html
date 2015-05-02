@@ -5,11 +5,6 @@
 </head>
 <body>
 <h1>Sites!</h1>
-
-
-
-<p>Sites</p>
-
 <table>
     <tr>
         <th>NAME</th>
@@ -17,11 +12,9 @@
         <th>DESCRIPTION</th>
     </tr>
     <tr th:each="s : ${sites}">
-        <td th:text=>${s.name}</td>
+        <td><a th:text="${s.name}" th:href="${s.hrefToFront}"></a></td>
         <td th:text="${s.url}"></td>
         <td th:text="${s.description}"></td>
-        <td th:text="${s.hrefToFront}"></td>
-
     </tr>
 </table>
 </body>

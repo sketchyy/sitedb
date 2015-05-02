@@ -8,14 +8,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Site {
-    public static final String linkToFront = "http://localhost:8082/sites?id=%d";
+    public static final String LINK_TO_FRONT = "http://localhost:8082/site?id=%d";
 
     private String name;
     private String url;
     private String description;
 
     private long id;
-    private String frontLink;
+    private String hrefToFront;
+
+    public void setIdByLink(String link) {
+        String[] ss = link.split("/");
+        id = Integer.valueOf(ss[ss.length - 1]);
+        hrefToFront = String.format(LINK_TO_FRONT, id);
+    }
 
     protected Site() {
     }
@@ -57,21 +63,14 @@ public class Site {
         this.id = id;
     }
 
-    public String getFrontLink() {
-        return frontLink;
+    public String getHrefToFront() {
+        return hrefToFront;
     }
 
-    public void setFrontLink(String frontLink) {
-        this.frontLink = frontLink;
+    public void setHrefToFront(String hrefToFront) {
+        this.hrefToFront = hrefToFront;
     }
 
-    public void setIdByLink(String link) {
-        String[] ss = link.split("/");
-        id = Integer.valueOf(ss[ss.length - 1]);
-        System.out.println("id = " + id);
-        link = String.format(linkToFront, id);
-        System.out.println("link = " + link);
-    }
 
     @Override
     public String toString() {
