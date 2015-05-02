@@ -1,4 +1,4 @@
-package com.sitedb.front.security;
+package com.sitedb.session.security;
 
 import javax.persistence.*;
 

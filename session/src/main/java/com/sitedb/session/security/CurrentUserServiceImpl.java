@@ -1,10 +1,7 @@
-package com.sitedb.front.security;
+package com.sitedb.session.security;
 
 import org.springframework.stereotype.Service;
 
-/**
- * Created by Alexander on 01.05.2015.
- */
 @Service
 public class CurrentUserServiceImpl implements CurrentUserService {
 

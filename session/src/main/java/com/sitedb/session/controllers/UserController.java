@@ -1,8 +1,8 @@
-package com.sitedb.front.controllers;
+package com.sitedb.session.controllers;
 
-import com.sitedb.front.security.UserCreateForm;
-import com.sitedb.front.security.UserCreateFormValidator;
-import com.sitedb.front.security.UserService;
+import com.sitedb.session.security.UserCreateForm;
+import com.sitedb.session.security.UserCreateFormValidator;
+import com.sitedb.session.security.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -1,4 +1,4 @@
-package com.sitedb.front.controllers;
+package com.sitedb.session.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,9 +8,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Optional;
 
-/**
- * Created by Alexander on 01.05.2015.
- */
 @Controller
 public class LoginController {
 

@@ -1,4 +1,4 @@
-package com.sitedb.front.security;
+package com.sitedb.session.security;
 
 import java.util.Collection;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.sitedb.front.security;
+package com.sitedb.session.security;
 
 import org.springframework.security.core.authority.AuthorityUtils;
 

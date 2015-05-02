@@ -1,6 +1,6 @@
-package com.sitedb.front.controllers;
+package com.sitedb.session.controllers;
 
-import com.sitedb.front.security.UserService;
+import com.sitedb.session.security.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
