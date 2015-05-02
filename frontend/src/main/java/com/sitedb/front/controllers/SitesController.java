@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sitedb.front.RestURIs;
 import com.sitedb.front.entities.Site;
+import com.sitedb.front.entities.Tag;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
@@ -57,16 +58,29 @@ public class SitesController {
     @RequestMapping("/site")
     public String site(@RequestParam(value = "id") Integer id, Model model) {
         RestTemplate restTemplate = restTemplate();
-
         Map<String, Integer> vars = new HashMap<>();
         vars.put("siteId", id);
 
-//        ResponseEntity<Resource<Site>> res
-//                = restTemplate.exchange(RestURIs.site, HttpMethod.GET, null, new ParameterizedTypeReference<Resource<Site>>() {
-//        }, vars);
+        // load Site from db-controller
+        ResponseEntity<Resource<Site>> res
+                = restTemplate.exchange(RestURIs.site, HttpMethod.GET, null, new ParameterizedTypeReference<Resource<Site>>() {
+        }, vars);
+        Site site = res.getBody().getContent();
 
-        Site site = restTemplate.getForObject(RestURIs.site, Site.class, vars);
+        // load Site from db-controller
+        String hrefToTags = res.getBody().getLink("tags").getHref();
+        ResponseEntity<Resources<Tag>> responseEntity = restTemplate.exchange(
+                hrefToTags, HttpMethod.GET, null,
+                new ParameterizedTypeReference<Resources<Tag>>() {
+                });
+        System.out.println("hrefToTags = " + hrefToTags);
+        System.out.println("response = " + responseEntity.getBody());
+        Collection<Tag> tags = responseEntity.getBody().getContent();
+
+
+        // add Site and Tags to model
         model.addAttribute("site", site);
+        model.addAttribute("tags", tags);
         return "site";
     }
 

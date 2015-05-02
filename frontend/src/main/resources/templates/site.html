@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title>Spring Security Example</title>
+    <title>Site info</title>
 </head>
 <body>
-<h1>Site!</h1>
+<h1>Site</h1>
 
 <p th:text="${site.name}"></p>
 <p th:text="${site.url}"></p>
 <p th:text="${site.description}"></p>
 <!--<p th:text="'Site = ' + ${name} + ' , url = ' + ${url}" />-->
+
+<h1>Tags:</h1>
+<table>
+    <tr th:each="t : ${tags}">
+        <td th:text="${t.name}"></td>
+    </tr>
+</table>
 </body>
 </html>
