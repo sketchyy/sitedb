@@ -19,8 +19,10 @@
 <h1>Comments</h1>
 <table>
     <tr th:each="c : ${comments}">
+        <td><a th:text="${c.user.name}" th:href="${c.user.hrefToFront}"></a> said:</td>
         <td th:text="${c.text}"></td>
         <td th:text="${c.time}"></td>
+
     </tr>
 </table>
 <form th:action="@{/comment}" method="post">

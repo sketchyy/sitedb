@@ -24,24 +24,12 @@ public class Comment {
     @Temporal(TemporalType.TIMESTAMP)
     private Date time;
 
-/*    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "SDB_USC",
-            joinColumns = @JoinColumn(name = "COMMENT_ID"),
-            inverseJoinColumns = @JoinColumn(name = "USER_ID")
-    )*/
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="USER_ID")
+    @ManyToOne()
+    @JoinColumn(name = "USER_ID")
     private User user;
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "SDB_USC",
-            joinColumns = @JoinColumn(name = "COMMENT_ID"),
-            inverseJoinColumns = @JoinColumn(name = "SITE_ID")
-    )*/
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="SITE_ID")
+    @ManyToOne()
+    @JoinColumn(name = "SITE_ID")
     private Site site;
 
     public Comment(String text, Date time) {

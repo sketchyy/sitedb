@@ -5,6 +5,7 @@ import com.sitedb.front.RestURIs;
 import com.sitedb.front.entities.Comment;
 import com.sitedb.front.entities.Site;
 import com.sitedb.front.entities.Tag;
+import com.sitedb.front.entities.User;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
@@ -67,28 +68,53 @@ public class SitesController {
 
         // load tags
         String hrefToTags = res.getBody().getLink("tags").getHref();
-        ResponseEntity<Resources<Tag>> tagsResponse = restTemplate.exchange(
-                hrefToTags, HttpMethod.GET, null,
-                new ParameterizedTypeReference<Resources<Tag>>() {
-                });
-        System.out.println("hrefToTags = " + hrefToTags);
-        System.out.println("response = " + tagsResponse.getBody());
-        Collection<Tag> tags = tagsResponse.getBody().getContent();
+        Collection<Tag> tags = loadTags(restTemplate, hrefToTags);
 
         // load comments
         String hrefToComments = res.getBody().getLink("comments").getHref();
-        ResponseEntity<Resources<Comment>> commentsResponse = restTemplate.exchange(
-                hrefToComments, HttpMethod.GET, null,
-                new ParameterizedTypeReference<Resources<Comment>>() {
-                });
-        System.out.println("hrefToComments = " + hrefToComments);
-        System.out.println("response = " + commentsResponse.getBody());
-        Collection<Comment> comments = commentsResponse.getBody().getContent();
+        Collection<Comment> comments = loadComments(restTemplate, hrefToComments);
 
         // add Site and Tags to model
         model.addAttribute("site", site);
         model.addAttribute("tags", tags);
         model.addAttribute("comments", comments);
         return "site";
+    }
+
+    private Collection<Comment> loadComments(RestTemplate restTemplate, String hrefToComments) {
+        ResponseEntity<Resources<Resource<Comment>>> commentsResponse = restTemplate.exchange(
+                hrefToComments, HttpMethod.GET, null,
+                new ParameterizedTypeReference<Resources<Resource<Comment>>>() {
+                });
+        System.out.println("load comments response = " + commentsResponse.getBody());
+
+        Collection<Resource<Comment>> commentsResources = commentsResponse.getBody().getContent();
+        Collection<Comment> comments = new ArrayList<>(commentsResources.size());
+
+        // load user to every comment
+        for (Resource<Comment> comRes : commentsResources) {
+            String linkToUser = comRes.getLink("user").getHref();
+
+            ResponseEntity<Resource<User>> userResponse = restTemplate.exchange(
+                    linkToUser, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<Resource<User>>() {
+                    });
+
+            User u = userResponse.getBody().getContent();
+            u.setHrefToFront(userResponse.getBody().getLink("self").getHref());
+            comRes.getContent().setUser(u);
+
+            comments.add(comRes.getContent());
+        }
+        return comments;
+    }
+
+    private Collection<Tag> loadTags(RestTemplate restTemplate, String hrefToTags) {
+        ResponseEntity<Resources<Tag>> tagsResponse = restTemplate.exchange(
+                hrefToTags, HttpMethod.GET, null,
+                new ParameterizedTypeReference<Resources<Tag>>() {
+                });
+        System.out.println("load tags response = " + tagsResponse.getBody());
+        return tagsResponse.getBody().getContent();
     }
 }
