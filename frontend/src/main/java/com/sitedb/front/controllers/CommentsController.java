@@ -44,7 +44,7 @@ public class CommentsController {
         commentNode.put("text", comment);
         commentNode.put("time", df.format(new Date()));
         commentNode.put("user", "http://localhost:8080/users/1"); //todo: take current user from session service
-        commentNode.put("site", "http://localhost:8080/sites/1");
+        commentNode.put("site", RestURIs.ALL_SITES + "/" + siteId);
 
         System.out.println(commentNode);
         RestTemplate restTemplate = RestTemplateCreator.create();
