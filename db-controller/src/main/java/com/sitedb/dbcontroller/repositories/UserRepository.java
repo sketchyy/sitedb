@@ -1,8 +1,7 @@
-package com.sitedb.sites.repositories;
+package com.sitedb.dbcontroller.repositories;
 
-import com.sitedb.sites.entities.User;
+import com.sitedb.dbcontroller.entities.User;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * Created by sketchyy on 29.04.2015.

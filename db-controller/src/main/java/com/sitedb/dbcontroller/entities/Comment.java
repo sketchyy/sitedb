@@ -1,4 +1,4 @@
-package com.sitedb.sites.entities;
+package com.sitedb.dbcontroller.entities;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -8,13 +8,13 @@ import java.util.Date;
  */
 
 @Entity
-@Table(name = "SDB_COMMENTS")
+@Table(name = "SDB_COMMENT")
 public class Comment {
 
     @Id
     @Column(name = "COMMENT_ID")
     @GeneratedValue(strategy=GenerationType.AUTO, generator="comm_id_gen")
-    @SequenceGenerator(name="comm_id_gen", sequenceName="SDB_COMMENTS_SEQ", allocationSize = 1)
+    @SequenceGenerator(name="comm_id_gen", sequenceName="SDB_COMMENT_SEQ", allocationSize = 1)
     private long id;
 
     @Column(name = "TEXT")
@@ -24,20 +24,24 @@ public class Comment {
     @Temporal(TemporalType.TIMESTAMP)
     private Date time;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+/*    @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(
             name = "SDB_USC",
             joinColumns = @JoinColumn(name = "COMMENT_ID"),
             inverseJoinColumns = @JoinColumn(name = "USER_ID")
-    )
+    )*/
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="USER_ID")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(
             name = "SDB_USC",
             joinColumns = @JoinColumn(name = "COMMENT_ID"),
             inverseJoinColumns = @JoinColumn(name = "SITE_ID")
-    )
+    )*/
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="SITE_ID")
     private Site site;
 
     public Comment(String text, Date time) {

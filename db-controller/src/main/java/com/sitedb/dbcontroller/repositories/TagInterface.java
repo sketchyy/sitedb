@@ -1,6 +1,6 @@
-package com.sitedb.sites.repositories;
+package com.sitedb.dbcontroller.repositories;
 
-import com.sitedb.sites.entities.Tag;
+import com.sitedb.dbcontroller.entities.Tag;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**

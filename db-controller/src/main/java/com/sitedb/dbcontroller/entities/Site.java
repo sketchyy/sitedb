@@ -1,4 +1,4 @@
-package com.sitedb.sites.entities;
+package com.sitedb.dbcontroller.entities;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -34,6 +34,11 @@ public class Site {
                     @JoinColumn(name = "TAG_ID", nullable = false, updatable = false
                     )})
     private Set<Tag> tags = new HashSet<>(0);
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "SITE_ID")
+    @OrderBy("COMMENT_TIME")
+    private Set<Comment> comments = new HashSet<>(0);
 
     protected Site() {
     }
@@ -81,6 +86,14 @@ public class Site {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override

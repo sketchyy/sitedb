@@ -1,6 +1,6 @@
-package com.sitedb.sites.repositories;
+package com.sitedb.dbcontroller.repositories;
 
-import com.sitedb.sites.entities.Rate;
+import com.sitedb.dbcontroller.entities.Rate;
 import org.springframework.data.repository.CrudRepository;
 
 /**

@@ -1,4 +1,4 @@
-package com.sitedb.sites.entities;
+package com.sitedb.dbcontroller.entities;
 
 import javax.persistence.*;
 import java.util.Date;
