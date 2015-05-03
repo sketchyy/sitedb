@@ -3,7 +3,7 @@ package com.sitedb.session.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * Created by sketchyy on 23.04.2015.
+ * Created by SaivR1t
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)

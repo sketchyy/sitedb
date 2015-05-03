@@ -3,7 +3,7 @@ package com.sitedb.session.security;
 import org.springframework.security.core.authority.AuthorityUtils;
 
 /**
- * Created by Alexander on 01.05.2015.
+ * Created by SaivR1t
  */
 public class CurrentUser extends org.springframework.security.core.userdetails.User {
 

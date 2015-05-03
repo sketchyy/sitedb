@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * Created by Alexander on 01.05.2015.
+ * Created by SaivR1t
  */
 @Controller
 public class UsersController {

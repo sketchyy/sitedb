@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
- * Created by Alexander on 01.05.2015.
+ * Created by SaivR1t on 01.05.2015.
  */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -37,14 +37,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .formLogin()
-                .failureUrl("/login?error")
+                .failureUrl("http://localhost:8082/login?error")
                 .usernameParameter("login")
                 .permitAll()
                 .and()
                 .logout()
                 .logoutUrl("/logout")
                 .deleteCookies("remember-me")
-                .logoutSuccessUrl("/")
+                .logoutSuccessUrl("/hello")
                 .permitAll()
                 .and()
                 .rememberMe();

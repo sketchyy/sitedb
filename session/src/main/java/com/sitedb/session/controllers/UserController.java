@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.util.NoSuchElementException;
 
 /**
- * Created by Alexander on 01.05.2015.
+ * Created by SaivR1t
  */
 @Controller
 public class UserController {

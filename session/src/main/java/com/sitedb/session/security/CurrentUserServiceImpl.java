@@ -2,6 +2,9 @@ package com.sitedb.session.security;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Created by SaivR1t
+ */
 @Service
 public class CurrentUserServiceImpl implements CurrentUserService {
 
