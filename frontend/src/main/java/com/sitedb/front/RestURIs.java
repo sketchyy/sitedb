@@ -10,5 +10,6 @@ public class RestURIs {
 
     public static final String ALL_COMMENTS = "http://localhost:8080/comments";
 
+    public static final String LOGIN_PAGE = "http://localhost:8085/login";
 
 }

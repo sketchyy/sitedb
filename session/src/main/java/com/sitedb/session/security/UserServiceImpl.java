@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     public User create(UserCreateForm form) {
         User user = new User();
         user.setLogin(form.getLogin());
-        user.setPassword(new BCryptPasswordEncoder().encode(form.getPassword()));
+        user.setPasswordHash(new BCryptPasswordEncoder().encode(form.getPassword()));
         user.setRole(form.getRole());
         return userRepository.save(user);
     }
