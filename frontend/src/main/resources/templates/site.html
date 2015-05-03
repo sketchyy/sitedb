@@ -5,17 +5,30 @@
 </head>
 <body>
 <h1>Site</h1>
-
 <p th:text="${site.name}"></p>
 <p th:text="${site.url}"></p>
 <p th:text="${site.description}"></p>
-<!--<p th:text="'Site = ' + ${name} + ' , url = ' + ${url}" />-->
 
-<h1>Tags:</h1>
+<h1>Tags</h1>
 <table>
     <tr th:each="t : ${tags}">
         <td th:text="${t.name}"></td>
     </tr>
 </table>
+
+<h1>Comments</h1>
+<table>
+    <tr th:each="c : ${comments}">
+        <td th:text="${c.text}"></td>
+        <td th:text="${c.time}"></td>
+    </tr>
+</table>
+<form th:action="@{/comment}" method="post">
+    <textarea name="comment" cols="40" rows="3"></textarea>
+    <input type="hidden" name="site" id="site" th:value="${site.id}"/>
+    <!-- TODO ajax post -->
+    <div><input type="submit" value="Post"/></div>
+    <div><input type="submit" value="Delete"/></div>
+</form>
 </body>
 </html>
