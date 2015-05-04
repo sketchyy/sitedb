@@ -2,10 +2,7 @@ package com.sitedb.front.controllers;
 
 import com.sitedb.front.RestTemplateCreator;
 import com.sitedb.front.RestURIs;
-import com.sitedb.front.entities.Comment;
-import com.sitedb.front.entities.Site;
-import com.sitedb.front.entities.Tag;
-import com.sitedb.front.entities.User;
+import com.sitedb.front.entities.*;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
@@ -74,11 +71,38 @@ public class SitesController {
         String hrefToComments = res.getBody().getLink("comments").getHref();
         Collection<Comment> comments = loadComments(restTemplate, hrefToComments);
 
+        // Does user already rates this site?
+        Rate rate = loadRate(restTemplate, site.getId(), 1); // todo load current user id
+
         // add Site and Tags to model
         model.addAttribute("site", site);
         model.addAttribute("tags", tags);
         model.addAttribute("comments", comments);
+        model.addAttribute("rate", rate);
         return "site";
+    }
+
+    private Rate loadRate(RestTemplate restTemplate, long siteId, long userId) {
+        ResponseEntity<Resources<Resource<Rate>>> response
+                = restTemplate.exchange(RestURIs.FIND_RATE_BY_SITE_AND_USER,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Resources<Resource<Rate>>>() {
+                },
+                siteId,
+                userId);
+        List<Resource<Rate>> rates = new ArrayList<>(response.getBody().getContent());
+
+        if (rates.isEmpty()) {
+            return new Rate();
+        }
+
+        Rate r = rates.get(0).getContent();
+        if (rates.get(0).hasLink("self")) {
+            r.setIdByHref(rates.get(0).getLink("self").getHref());
+        }
+
+        return r;
     }
 
     private Collection<Comment> loadComments(RestTemplate restTemplate, String hrefToComments) {

@@ -30,7 +30,6 @@ public class CommentsController {
     @RequestMapping(value = "/comment",method = RequestMethod.POST)
     public String postComment(@RequestParam(value = "comment") String comment,
                             @RequestParam(value = "site") Integer siteId) {
-
         System.out.println("site = " + siteId);
         System.out.println("comment = " + comment);
 
@@ -39,9 +38,8 @@ public class CommentsController {
         objectMapper.registerModule(new Jackson2HalModule());
 
         ObjectNode commentNode = objectMapper.createObjectNode();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
         commentNode.put("text", comment);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         commentNode.put("time", df.format(new Date()));
         commentNode.put("user", "http://localhost:8080/users/1"); //todo: take current user from session service
         commentNode.put("site", RestURIs.ALL_SITES + "/" + siteId);

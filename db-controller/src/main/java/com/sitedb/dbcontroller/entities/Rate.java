@@ -19,11 +19,11 @@ public class Rate {
     @Column(name = "RATE")
     private int rate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "SITE_ID")
     private Site site;
 
