@@ -7,7 +7,6 @@ import com.sitedb.front.RestTemplateCreator;
 import com.sitedb.front.RestURIs;
 import com.sitedb.front.entities.Rate;
 import org.springframework.hateoas.hal.Jackson2HalModule;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by sketchyy on 03.05.2015.
@@ -69,10 +69,29 @@ public class RateController {
         return createdRate;
     }
 
+    @RequestMapping(value = "/avgrating", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, String> getAvgRating(@RequestParam(value = "site") Integer siteId) {
+        Map<String, String> result = new HashMap<>();
+        RestTemplate restTemplate = RestTemplateCreator.create();
+
+        // load avg
+        ResponseEntity<Double> avgResp = restTemplate.getForEntity(RestURIs.GET_AVG_RATING_URI, Double.class, siteId);
+        NumberFormat formatter = new DecimalFormat("#0.00");
+        result.put("avg", formatter.format(avgResp.getBody()));
+
+        // load voters count
+        ResponseEntity<Integer> cntResp = restTemplate.getForEntity(RestURIs.GET_VOTERS_COUNT_URI, Integer.class, siteId);
+        result.put("cnt", cntResp.getBody().toString());
+
+        return result;
+    }
+
     private ObjectMapper objectMapperInit() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.registerModule(new Jackson2HalModule());
         return objectMapper;
     }
+
 }

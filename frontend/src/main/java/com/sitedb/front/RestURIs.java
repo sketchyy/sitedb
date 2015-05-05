@@ -15,4 +15,6 @@ public class RestURIs {
 
     public static final String LOGIN_PAGE = "http://localhost:8085/login";
 
+    public static final String GET_VOTERS_COUNT_URI = "http://localhost:8080/rates/search/getVotersCount?site={siteId}";
+    public static final String GET_AVG_RATING_URI = "http://localhost:8080/rates/search/getAvgRating?site={siteId}";
 }
