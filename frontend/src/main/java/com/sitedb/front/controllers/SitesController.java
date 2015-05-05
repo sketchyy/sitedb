@@ -35,7 +35,7 @@ public class SitesController {
                 new ParameterizedTypeReference<PagedResources<Resource<Site>>>() {
                 }, page, size);
 
-        List<Resource<Site>> resSites = new ArrayList(responseEntity.getBody().getContent());
+        List<Resource<Site>> resSites = new ArrayList<>(responseEntity.getBody().getContent());
         List<Site> sites = new ArrayList<>(resSites.size());
 
         for (Resource<Site> rs : resSites) {
@@ -80,6 +80,9 @@ public class SitesController {
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Site>>() {
                 }, site.getId());
 
+        // Is in favourite?
+        boolean isFav = isInFavourite(restTemplate, id, 1); // todo load current user id
+
         System.out.println("SIMILAR : " + similarSites.getBody());
         // add Site and Tags to model
         model.addAttribute("site", site);
@@ -87,7 +90,14 @@ public class SitesController {
         model.addAttribute("comments", comments);
         model.addAttribute("rate", rate);
         model.addAttribute("similar", similarSites.getBody());
+        model.addAttribute("isFav", isFav);
         return "site";
+    }
+
+
+    private boolean isInFavourite(RestTemplate restTemplate, long siteId, long userId) {
+        Integer resp = restTemplate.getForObject(RestURIs.IS_SITE_IN_FAVS_URI, Integer.class, siteId, userId);
+        return resp > 0;
     }
 
     private Rate loadRate(RestTemplate restTemplate, long siteId, long userId) {

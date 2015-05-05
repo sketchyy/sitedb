@@ -1,6 +1,7 @@
 package com.sitedb.dbcontroller.entities;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,7 +45,7 @@ public class User {
             inverseJoinColumns = {
                     @JoinColumn(name = "SITE_ID", nullable = false, updatable = false
                     )})
-    private Set<Site> favourite = new HashSet<>(0);
+    private Collection<Site> favourites = new HashSet<>(0);
 
     public User() {
     }
@@ -105,11 +106,11 @@ public class User {
         this.gender = gender;
     }
 
-    public Set<Site> getFavourite() {
-        return favourite;
+    public Collection<Site> getFavourites() {
+        return favourites;
     }
 
-    public void setFavourite(Set<Site> favourite) {
-        this.favourite = favourite;
+    public void setFavourites(Collection<Site> favourites) {
+        this.favourites = favourites;
     }
 }
