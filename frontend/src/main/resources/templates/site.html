@@ -34,6 +34,7 @@
         <td th:text="${c.time}"></td>
     </tr>
 </table>
+
 <form th:action="@{/comment}" method="post">
     <textarea name="comment" cols="40" rows="3"></textarea>
     <input type="hidden" name="site" id="site" th:value="${site.id}"/>
@@ -41,6 +42,22 @@
     <div><input type="submit" value="Post"/></div>
     <div><input type="submit" value="Delete"/></div>
 </form>
+
+<div>
+    <h1>Similar</h1>
+    <table>
+        <tr>
+            <th>NAME</th>
+            <th>URL</th>
+            <th>DESCRIPTION</th>
+        </tr>
+        <tr th:each="s : ${similar}">
+            <td><a th:text="${s.name}" th:href="${s.hrefToFront}"></a></td>
+            <td th:text="${s.url}"></td>
+            <td th:text="${s.description}"></td>
+        </tr>
+    </table>
+</div>
 
 <script>
         $('.rating').raty({

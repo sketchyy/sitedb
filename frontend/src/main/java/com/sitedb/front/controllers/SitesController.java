@@ -74,11 +74,19 @@ public class SitesController {
         // Does user already rates this site?
         Rate rate = loadRate(restTemplate, site.getId(), 1); // todo load current user id
 
+        // Load similar sites
+        System.out.println("111");
+        ResponseEntity<List<Site>> similarSites = restTemplate.exchange(RestURIs.SIMILAR_SITES_URI,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Site>>() {
+                }, site.getId());
+
+        System.out.println("SIMILAR : " + similarSites.getBody());
         // add Site and Tags to model
         model.addAttribute("site", site);
         model.addAttribute("tags", tags);
         model.addAttribute("comments", comments);
         model.addAttribute("rate", rate);
+        model.addAttribute("similar", similarSites.getBody());
         return "site";
     }
 
@@ -110,7 +118,7 @@ public class SitesController {
                 hrefToComments, HttpMethod.GET, null,
                 new ParameterizedTypeReference<Resources<Resource<Comment>>>() {
                 });
-        System.out.println("load comments response = " + commentsResponse.getBody());
+//        System.out.println("load comments response = " + commentsResponse.getBody());
 
         Collection<Resource<Comment>> commentsResources = commentsResponse.getBody().getContent();
         Collection<Comment> comments = new ArrayList<>(commentsResources.size());

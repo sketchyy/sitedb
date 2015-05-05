@@ -78,11 +78,13 @@ public class RateController {
         // load avg
         ResponseEntity<Double> avgResp = restTemplate.getForEntity(RestURIs.GET_AVG_RATING_URI, Double.class, siteId);
         NumberFormat formatter = new DecimalFormat("#0.00");
-        result.put("avg", formatter.format(avgResp.getBody()));
+        Double avg = (avgResp.getBody() == null) ? 0.0 : avgResp.getBody();
+        result.put("avg", formatter.format(avg));
 
         // load voters count
         ResponseEntity<Integer> cntResp = restTemplate.getForEntity(RestURIs.GET_VOTERS_COUNT_URI, Integer.class, siteId);
-        result.put("cnt", cntResp.getBody().toString());
+        Integer cnt = (cntResp.getBody() == null) ? 0 : cntResp.getBody();
+        result.put("cnt", cnt.toString());
 
         return result;
     }

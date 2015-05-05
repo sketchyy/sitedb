@@ -29,11 +29,11 @@ public class SimilarSitesController {
         RestTemplate restTemplate = RestTemplateCreator.create();
 
         ResponseEntity<PagedResources<Resource<Site>>> responseEntity = restTemplate.exchange(
-                RestURIs.ALL_SITES_PAGED, HttpMethod.GET, null,
+                RestURIs.SIMILAR_SITES_URI, HttpMethod.GET, null,
                 new ParameterizedTypeReference<PagedResources<Resource<Site>>>() {
-                }, 0, 20);
+                }, siteId);
 
-        List<Resource<Site>> resSites = new ArrayList(responseEntity.getBody().getContent());
+        List<Resource<Site>> resSites = new ArrayList<>(responseEntity.getBody().getContent());
         List<Site> sites = new ArrayList<>(resSites.size());
 
         for (Resource<Site> rs : resSites) {
