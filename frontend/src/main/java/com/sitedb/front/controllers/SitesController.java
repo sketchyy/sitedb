@@ -1,7 +1,7 @@
 package com.sitedb.front.controllers;
 
 import com.sitedb.front.RestTemplateCreator;
-import com.sitedb.front.RestURIs;
+import com.sitedb.front.FrontURIs;
 import com.sitedb.front.entities.*;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.PagedResources;
@@ -30,45 +30,34 @@ public class SitesController {
                         Model model) {
         RestTemplate restTemplate = RestTemplateCreator.create();
 
-        ResponseEntity<PagedResources<Resource<Site>>> responseEntity = restTemplate.exchange(
-                RestURIs.ALL_SITES_PAGED, HttpMethod.GET, null,
-                new ParameterizedTypeReference<PagedResources<Resource<Site>>>() {
+        ResponseEntity<List<Site>> responseEntity = restTemplate.exchange(FrontURIs.ALL_SITES_PAGED,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Site>>() {
                 }, page, size);
 
-        List<Resource<Site>> resSites = new ArrayList<>(responseEntity.getBody().getContent());
-        List<Site> sites = new ArrayList<>(resSites.size());
-
-        for (Resource<Site> rs : resSites) {
-            String href = rs.getLink("self").getHref();
-            // initialize href to front, not to backend
-            rs.getContent().setIdByLink(href);
-            // and store it with Site
-            sites.add(rs.getContent());
-        }
-
-        model.addAttribute("sites", sites);
+        model.addAttribute("sites", responseEntity.getBody());
         return "sites";
     }
 
     @RequestMapping("/site")
-    public String site(@RequestParam(value = "id") Integer id, Model model) {
+    public String site(@RequestParam(value = "id") Long siteId, Model model) {
         RestTemplate restTemplate = RestTemplateCreator.create();
-        Map<String, Integer> vars = new HashMap<>();
-        vars.put("siteId", id);
+//        Map<String, Integer> vars = new HashMap<>();
+//        vars.put("siteId", siteId);
 
         // load Site from db-controller
-        ResponseEntity<Resource<Site>> res
-                = restTemplate.exchange(RestURIs.SITE, HttpMethod.GET, null, new ParameterizedTypeReference<Resource<Site>>() {
-        }, vars);
-        Site site = res.getBody().getContent();
-        site.setIdByLink(res.getBody().getLink("self").getHref());
+        Site site = restTemplate.getForObject(FrontURIs.SITE, Site.class, siteId);
 
         // load tags
-        String hrefToTags = res.getBody().getLink("tags").getHref();
-        Collection<Tag> tags = loadTags(restTemplate, hrefToTags);
+//        String hrefToTags = res.getBody().getLink("tags").getHref();
+//        Collection<Tag> tags = loadTags(restTemplate, hrefToTags);
+        ResponseEntity<List<Tag>> tagsBySiteResponse = restTemplate.exchange(FrontURIs.TAGS_BY_SITE_URI,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Tag>>() {
+                }, site.getId());
+        Collection<Tag> tags = tagsBySiteResponse.getBody();
 
         // load comments
-        String hrefToComments = res.getBody().getLink("comments").getHref();
+        String hrefToComments = /*res.getBody().getLink("comments").getHref()*/
+                "http://localhost:8080/sites/" + site.getId() + "/comments";
         Collection<Comment> comments = loadComments(restTemplate, hrefToComments);
 
         // Does user already rates this site?
@@ -76,12 +65,12 @@ public class SitesController {
 
         // Load similar sites
         System.out.println("111");
-        ResponseEntity<List<Site>> similarSites = restTemplate.exchange(RestURIs.SIMILAR_SITES_URI,
+        ResponseEntity<List<Site>> similarSites = restTemplate.exchange(FrontURIs.SIMILAR_SITES_URI,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Site>>() {
                 }, site.getId());
 
         // Is in favourite?
-        boolean isFav = isInFavourite(restTemplate, id, 1); // todo load current user id
+        boolean isFav = isInFavourite(restTemplate, siteId, 1); // todo load current user id
 
         System.out.println("SIMILAR : " + similarSites.getBody());
         // add Site and Tags to model
@@ -96,13 +85,13 @@ public class SitesController {
 
 
     private boolean isInFavourite(RestTemplate restTemplate, long siteId, long userId) {
-        Integer resp = restTemplate.getForObject(RestURIs.IS_SITE_IN_FAVS_URI, Integer.class, siteId, userId);
+        Integer resp = restTemplate.getForObject(FrontURIs.IS_SITE_IN_FAVS_URI, Integer.class, siteId, userId);
         return resp > 0;
     }
 
     private Rate loadRate(RestTemplate restTemplate, long siteId, long userId) {
         ResponseEntity<Resources<Resource<Rate>>> response
-                = restTemplate.exchange(RestURIs.FIND_RATE_BY_SITE_AND_USER,
+                = restTemplate.exchange(FrontURIs.FIND_RATE_BY_SITE_AND_USER,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<Resources<Resource<Rate>>>() {

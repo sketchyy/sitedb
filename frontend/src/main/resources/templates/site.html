@@ -39,7 +39,7 @@
 <h1>Tags</h1>
 <table>
     <tr th:each="t : ${tags}">
-        <td th:text="${t.name}"></td>
+        <td><a th:text="${t.name}" th:href="${t.hrefToFront}"></a></td>
     </tr>
 </table>
 
@@ -79,7 +79,7 @@
 <script>
         $('.rating').raty({
             score: $('#rate').html(),
-            click: function (score, evt) {
+            click: function (score) {
                 if ($('#rateId').html() === '0') {
                     sendPostRating(score);
                 } else {
