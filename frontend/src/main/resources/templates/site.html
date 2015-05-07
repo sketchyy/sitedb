@@ -2,15 +2,30 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Site info</title>
-    <link rel="stylesheet" href="/style/rating.css"/>
     <script type="text/javascript" src="/js/jquery-2.1.3.js"></script>
     <script type="text/javascript" src="/js/jquery.raty.js"></script>
     <script type="text/javascript" src="/js/rating.js"></script>
-
+    <script type="text/javascript" src="/js/favourite.js"></script>
 </head>
 <body>
+
 <h1>Site</h1>
-<p th:text="${site.name}"></p>
+
+<div>
+    <div th:id="isFav" style="display:none" th:text="${isFav}"></div>
+    <button th:id="favButton" type="button" onclick="fav()" th:switch="${isFav}">
+        <span th:case="true">Unfavourite!</span>
+        <span th:case="false">Favourite!</span>
+    </button>
+</div>
+
+<div>
+    <p id="siteName" th:switch="${isFav}">
+        <span th:case="true" th:text="${site.name}" style="color:green;" ></span>
+        <span th:case="false" th:text="${site.name}" style="color:black;" ></span>
+    </p>
+</div>
+
 <p th:text="${site.url}"></p>
 <p th:text="${site.description}"></p>
 <p th:id="siteId" style="display:none" th:text="${site.id}"></p>
@@ -19,11 +34,12 @@
 
 
 <div class="rating"></div>
+<div id="avgRate"></div>
 
 <h1>Tags</h1>
 <table>
     <tr th:each="t : ${tags}">
-        <td th:text="${t.name}"></td>
+        <td><a th:text="${t.name}" th:href="${t.hrefToFront}"></a></td>
     </tr>
 </table>
 
@@ -35,6 +51,7 @@
         <td th:text="${c.time}"></td>
     </tr>
 </table>
+
 <form th:action="@{/comment}" method="post">
     <textarea name="comment" cols="40" rows="3"></textarea>
     <input type="hidden" name="site" id="site" th:value="${site.id}"/>
@@ -43,17 +60,34 @@
     <div><input type="submit" value="Delete"/></div>
 </form>
 
+<div>
+    <h1>Similar</h1>
+    <table>
+        <tr>
+            <th>NAME</th>
+            <th>URL</th>
+            <th>DESCRIPTION</th>
+        </tr>
+        <tr th:each="s : ${similar}">
+            <td><a th:text="${s.name}" th:href="${s.hrefToFront}"></a></td>
+            <td th:text="${s.url}"></td>
+            <td th:text="${s.description}"></td>
+        </tr>
+    </table>
+</div>
+
 <script>
         $('.rating').raty({
             score: $('#rate').html(),
-            click: function (score, evt) {
+            click: function (score) {
                 if ($('#rateId').html() === '0') {
-                    sendPost(score);
+                    sendPostRating(score);
                 } else {
-                    sendPut(score);
+                    sendPutRating(score);
                 }
             }
         });
+        getAverageRating();
 </script>
 </body>
 </html>

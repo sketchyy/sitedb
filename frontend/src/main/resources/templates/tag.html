@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title th:text="${tag.name}"></title>
+</head>
+<body>
+<h1 th:text="${tag.name}"></h1>
+<table>
+    <tr>
+        <th>NAME</th>
+        <th>URL</th>
+        <th>DESCRIPTION</th>
+    </tr>
+    <tr th:each="s : ${sites}">
+        <td><a th:text="${s.name}" th:href="${s.hrefToFront}"></a></td>
+        <td th:text="${s.url}"></td>
+        <td th:text="${s.description}"></td>
+    </tr>
+</table>
+</body>
+</html>
