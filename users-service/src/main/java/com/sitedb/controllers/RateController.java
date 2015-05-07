@@ -1,11 +1,11 @@
-package com.sitedb.front.controllers;
+package com.sitedb.controllers;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.sitedb.front.RestTemplateCreator;
-import com.sitedb.front.FrontURIs;
-import com.sitedb.front.entities.Rate;
+import com.sitedb.UsersURIs;
+import com.sitedb.Utils.RestTemplateCreator;
+import com.sitedb.entities.Rate;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -37,10 +37,10 @@ public class RateController {
         ObjectNode rateNode = objectMapper.createObjectNode();
         rateNode.put("rate", rate);
         rateNode.put("user", "http://localhost:8080/users/1"); //todo: take current user from session service
-        rateNode.put("site", FrontURIs.ALL_SITES + "/" + siteId);
+        rateNode.put("site", UsersURIs.ALL_SITES + "/" + siteId);
 
         RestTemplate restTemplate = RestTemplateCreator.create();
-        URI rateURI = restTemplate.postForLocation(FrontURIs.ALL_RATES, rateNode);
+        URI rateURI = restTemplate.postForLocation(UsersURIs.ALL_RATES, rateNode);
         System.out.println(rateURI.toString());
 
         Rate createdRate = new Rate();
@@ -54,7 +54,7 @@ public class RateController {
     @ResponseBody
     public Rate updateRate(@RequestParam(value = "rateId") Integer rateId,
                            @RequestParam(value = "rate") Integer rate) {
-        String rateUri = FrontURIs.ALL_RATES + "/" + rateId;
+        String rateUri = UsersURIs.ALL_RATES + "/" + rateId;
         ObjectMapper objectMapper = objectMapperInit();
 
         ObjectNode rateNode = objectMapper.createObjectNode();
@@ -76,13 +76,13 @@ public class RateController {
         RestTemplate restTemplate = RestTemplateCreator.create();
 
         // load avg
-        ResponseEntity<Double> avgResp = restTemplate.getForEntity(FrontURIs.GET_AVG_RATING_URI, Double.class, siteId);
+        ResponseEntity<Double> avgResp = restTemplate.getForEntity(UsersURIs.GET_AVG_RATING_URI, Double.class, siteId);
         NumberFormat formatter = new DecimalFormat("#0.00");
         Double avg = (avgResp.getBody() == null) ? 0.0 : avgResp.getBody();
         result.put("avg", formatter.format(avg));
 
         // load voters count
-        ResponseEntity<Integer> cntResp = restTemplate.getForEntity(FrontURIs.GET_VOTERS_COUNT_URI, Integer.class, siteId);
+        ResponseEntity<Integer> cntResp = restTemplate.getForEntity(UsersURIs.GET_VOTERS_COUNT_URI, Integer.class, siteId);
         Integer cnt = (cntResp.getBody() == null) ? 0 : cntResp.getBody();
         result.put("cnt", cnt.toString());
 
