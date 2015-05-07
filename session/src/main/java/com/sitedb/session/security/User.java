@@ -20,8 +20,6 @@ public class User {
     @Column(name = "password", nullable = false)
     private String passwordHash;
 
-
-
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -56,5 +54,9 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String toString() {
+        return "user:" + login + "  password:" + passwordHash;
     }
 }

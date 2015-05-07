@@ -1,0 +1,9 @@
+<http auto-config="true" use-expressions="true">
+
+    <!-- enable remember me -->
+    <remember-me
+            token-validity-seconds="1209600"
+            remember-me-parameter="remember-me"
+            data-source-ref="dataSource"/>
+
+</http>
