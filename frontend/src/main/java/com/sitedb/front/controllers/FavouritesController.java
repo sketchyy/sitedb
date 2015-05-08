@@ -6,10 +6,7 @@ import com.sitedb.front.entities.Site;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,21 +29,7 @@ public class FavouritesController {
         RestTemplate restTemplate = RestTemplateCreator.create();
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter(Charset.forName("UTF-8")));
 
-        // Get all favs
-        ResponseEntity<Resources<Resource<Site>>> favouritesResp = restTemplate.exchange(FrontURIs.ALL_FAVOURITES_URI, HttpMethod.GET, null,
-                new ParameterizedTypeReference<Resources<Resource<Site>>>() {
-                }, 1 /* userId */);
-
-        // Add new link to favourite list
-        String siteLinks = buildURIList(favouritesResp.getBody().getContent(), FrontURIs.ALL_SITES + "/" + siteId);
-
-        // Send PUT to db-controller
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "text/uri-list");
-        HttpEntity<Object> request = new HttpEntity<>(siteLinks, headers);
-
-        System.out.println("LNKS =  \n" + siteLinks);
-        return restTemplate.exchange(FrontURIs.ALL_FAVOURITES_URI, HttpMethod.PUT, request, String.class, 1 /* userId */);
+        return restTemplate.exchange("http://localhost:8083/favourites?site="+siteId, HttpMethod.PUT, RequestEntity.EMPTY, String.class);
     }
 
 //    @RequestMapping(value = "/favourite", method = RequestMethod.GET)

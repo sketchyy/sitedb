@@ -9,7 +9,7 @@ public class FrontURIs {
     public static final String RECOM = "http://localhost:8084";
     public static final String DB_CONTROLLER = "http://localhost:8080";
     public static final String SESSION = "http://localhost:8085";
-//    public static final String USERS = "http://localhost:8080/";
+    public static final String USERS = "http://localhost:8083";
 
     // Sites
     public static final String ALL_SITES_PAGED = RECOM + "/sites?page={page}&size={size}";

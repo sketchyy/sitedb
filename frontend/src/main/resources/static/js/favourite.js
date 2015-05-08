@@ -1,13 +1,19 @@
+var USERS_HOST = "http://localhost:8083";
+
 function fav() {
+    var siteId = $('#siteId').html();
     var params = {
-        site: $('#siteId').html()
+        site: siteId
     };
 
     if ($('#isFav').html() === 'true') {
         // Already in favs, so delete
         $.ajax({
-            url: "/favourites?" + $.param(params),
+            url: USERS_HOST + "/favourites/" + siteId /*$.param(params)*/,
             type: 'DELETE',
+            xhrFields: {
+                withCredentials: true
+            },
             success: function () {
                 // Styling
                 $('#isFav').html('false');
@@ -21,8 +27,11 @@ function fav() {
     } else {
         // Not in favs, so put
         $.ajax({
-            url: "/favourites?" + $.param(params),
+            url: USERS_HOST + "/favourites?" + $.param(params),
             type: 'PUT',
+            xhrFields: {
+                withCredentials: true
+            },
             success: function () {
                 // Styling
                 $('#isFav').html('true');
