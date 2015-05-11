@@ -1,5 +1,6 @@
 package com.sitedb.session.security;
 
+import com.sitedb.session.entities.Role;
 import org.springframework.stereotype.Service;
 
 /**

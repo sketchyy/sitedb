@@ -1,6 +1,7 @@
 package com.sitedb.session.security;
 
 import com.sitedb.session.entities.Session;
+import com.sitedb.session.entities.User;
 import com.sitedb.session.repositories.SessionRepository;
 import com.sun.org.apache.xml.internal.security.utils.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class AuthorizeService {
     public String GetLogin(@RequestParam(value = "login") String login,
                            @RequestParam(value = "password") String password,
                            HttpServletResponse response) {
+//        System.out.println(org.springframework.security.crypto.codec.Base64.encode(password.getBytes()).toString());
         User user = userRepository.findByLoginAndPasswordHash(login, password);
         if (user == null)
             return "redirect:" + "http://localhost:8082/login?error";

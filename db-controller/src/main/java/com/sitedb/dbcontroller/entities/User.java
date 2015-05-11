@@ -1,10 +1,11 @@
 package com.sitedb.dbcontroller.entities;
 
 import javax.persistence.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by sketchyy on 29.04.2015.
@@ -55,6 +56,14 @@ public class User {
         this.surname = surname;
         this.email = email;
         this.birthday = birthday;
+        this.gender = gender;
+    }
+
+    public User(String name, String surname, String email, String birthday, String gender) throws ParseException {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.birthday = new SimpleDateFormat("dd/MM/yyyy").parse(birthday);
         this.gender = gender;
     }
 

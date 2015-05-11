@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title> Authorize User </title>
+</head>
+<body>
+<!--<div th:if="${param.error}">-->
+<!--Invalid username and password.-->
+<!--</div>-->
+<!--<div th:if="${param.logout}">-->
+<!--You have been logged out.-->
+<!--</div>-->
+<form action="http://localhost:8085/register" method="post">
+    <div><label> Login : <input type="text" name="login"/> </label></div>
+    <div><label> Password: <input type="password" name="password"/> </label></div>
+    <div><label> Name : <input type="text" name="name"/> </label></div>
+    <div><label> Surname : <input type="text" name="surname"/> </label></div>
+    <div><label> Email : <input type="text" name="email"/> </label></div>
+    <div><label> Birthday : <input type="text" name="birthday"/> </label></div>
+    <div><label> Gender : <input type="text" name="gender"/> </label></div>
+    <div><input type="submit" value="Register"/></div>
+</form>
+</body>
+</html>
+<!--<!DOCTYPE html>-->
+<!--<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"-->
+<!--xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">-->
+<!--<head>-->
+<!--<style type="text/css">-->
+
+<!--body {font-family:Arial, Sans-Serif;}-->
+
+<!--#container {width:300px; margin:0 auto;}-->
+
+<!--/* Nicely lines up the labels. */-->
+<!--form label {display:inline-block; width:140px;}-->
+
+<!--/* You could add a class to all the input boxes instead, if you like. That would be safer, and more backwards-compatible */-->
+<!--form input[type="text"],-->
+<!--form input[type="password"],-->
+<!--form input[type="email"] {width:160px;}-->
+
+<!--form .line {clear:both;}-->
+<!--form .line.submit {text-align:right;}-->
+
+<!--</style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div id="container">-->
+<!--<form action="http://localhost:8085/register" method="post">-->
+<!--<h1>Регистрация</h1>-->
+<!--<div class="line"><label for="login">Логин *: </label><input type="text" id="login" /></div>-->
+<!--<div class="line"><label for="password">Пароль *: </label><input type="password" id="password" /></div>-->
+<!--&lt;!&ndash;&lt;!&ndash; You may want to consider adding a "confirm" password box also &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="line"><label for="surname">Surname *: </label><input type="text" id="surname" /></div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="line"><label for="other_names">Other Names *: </label><input type="text" id="names" /></div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="line"><label for="dob">Date of Birth *: </label><input type="text" id="dob" /></div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="line"><label for="email">Email *: </label><input type="email" id="email" /></div>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash; Valid input types: http://www.w3schools.com/html5/html5_form_input_types.asp &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="line"><label for="tel">Telephone: </label><input type="text" id="tel" /></div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="line"><label for="add">Address *: </label><input type="text" id="add" /></div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="line"><label for="ptc">Post Code *: </label><input type="text" id="ptc" /></div>&ndash;&gt;-->
+<!--<div class="line submit"><input type="submit" value="Зарегистрировать" /></div>-->
+<!--<p>Поля отмеченные * обязательны к заполнению.</p>-->
+<!--</form>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->

@@ -1,5 +1,7 @@
 package com.sitedb.session.security;
 
+import com.sitedb.session.entities.User;
+
 import java.util.Collection;
 import java.util.Optional;
 

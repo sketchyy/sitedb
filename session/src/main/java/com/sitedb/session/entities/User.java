@@ -1,4 +1,4 @@
-package com.sitedb.session.security;
+package com.sitedb.session.entities;
 
 import javax.persistence.*;
 
@@ -10,25 +10,24 @@ import javax.persistence.*;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false, updatable = false)
-    private Long user_id;
+    @Column(name = "USER_ID")
+    private long user_id;
 
-    @Column(name = "login", nullable = false, unique = true)
+    @Column(name = "LOGIN", nullable = false, unique = true)
     private String login;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "PASSWORD", nullable = false)
     private String passwordHash;
 
-    @Column(name = "role", nullable = false)
+    @Column(name = "ROLE", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public Long getUser_id() {
+    public long getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(Long user_id) {
+    public void setUser_id(long user_id) {
         this.user_id = user_id;
     }
 

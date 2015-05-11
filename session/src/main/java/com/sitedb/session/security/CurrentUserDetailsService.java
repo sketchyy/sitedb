@@ -1,5 +1,6 @@
 package com.sitedb.session.security;
 
+import com.sitedb.session.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

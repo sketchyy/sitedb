@@ -18,4 +18,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query(IS_SITE_IN_FAVOURITES_QUERY)
     Integer isSiteInFavourites(@Param("user") Long user, @Param("site") Long site);
 
+    @Query("SELECT u.id FROM User u WHERE u.email = :email")
+    Long findByEmail(@Param("email") String email);
+
 }

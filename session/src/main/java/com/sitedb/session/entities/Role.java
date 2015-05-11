@@ -1,4 +1,4 @@
-package com.sitedb.session.security;
+package com.sitedb.session.entities;
 
 /**
  * Created by Alexander on 01.05.2015.

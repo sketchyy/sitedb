@@ -1,5 +1,6 @@
 package com.sitedb.session.security;
 
+import com.sitedb.session.entities.Role;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
