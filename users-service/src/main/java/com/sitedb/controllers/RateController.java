@@ -82,12 +82,7 @@ public class RateController {
         result.put("avg", formatter.format(avg));
 
         // load voters count
-<<<<<<< Updated upstream:users-service/src/main/java/com/sitedb/controllers/RateController.java
         ResponseEntity<Integer> cntResp = restTemplate.getForEntity(UsersURIs.GET_VOTERS_COUNT_URI, Integer.class, siteId);
-=======
-        ResponseEntity<Integer> cntResp = restTemplate.getForEntity(FrontURIs.GET_VOTERS_COUNT_URI,
-                Integer.class, siteId);
->>>>>>> Stashed changes:frontend/src/main/java/com/sitedb/front/controllers/RateController.java
         Integer cnt = (cntResp.getBody() == null) ? 0 : cntResp.getBody();
         result.put("cnt", cnt.toString());
 
