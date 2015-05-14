@@ -4,17 +4,17 @@ import com.sitedb.session.entities.Session;
 import com.sitedb.session.entities.UserID;
 import com.sitedb.session.repositories.SessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
+
+//import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+//import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 /**
  * Created by Alexander on 04.05.2015.
@@ -25,13 +25,6 @@ public class SessionController {
 
     @Autowired
     DataSource dataSource;
-
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
-        db.setDataSource(dataSource);
-        return db;
-    }
 
     @Autowired
     private SessionRepository sessionRepository;
