@@ -37,17 +37,8 @@ public class SitesController {
                 }, page, size);
 
         List<Resource<Site>> respSites = new ArrayList<>(responseEntity.getBody().getContent());
-        List<Site> sites = new ArrayList<>(respSites.size());
 
-        for (Resource<Site> rs : respSites) {
-            String href = rs.getLink("self").getHref();
-            // initialize href to front, not to backend
-            rs.getContent().setIdByLink(href);
-            // and store it with Site
-            sites.add(rs.getContent());
-        }
-
-        return sites;
+        return extractSitesFromResponse(respSites);
     }
 
     @RequestMapping("/sites/{siteId}")
@@ -77,17 +68,8 @@ public class SitesController {
                 }, siteId);
 
         List<Resource<Site>> resSites = new ArrayList<>(responseEntity.getBody().getContent());
-        List<Site> sites = new ArrayList<>(resSites.size());
 
-        for (Resource<Site> rs : resSites) {
-            String href = rs.getLink("self").getHref();
-            // initialize href to front, not to backend
-            rs.getContent().setIdByLink(href);
-            // and store it with Site
-            sites.add(rs.getContent());
-        }
-
-        return sites;
+        return extractSitesFromResponse(resSites);
     }
 
     @RequestMapping("/sites/{site}/tags")
@@ -102,17 +84,7 @@ public class SitesController {
         System.out.println(responseEntity.getBody());
 
         List<Resource<Tag>> respTags = new ArrayList<>(responseEntity.getBody().getContent());
-        List<Tag> tags = new ArrayList<>(respTags.size());
-
-        for (Resource<Tag> rt : respTags) {
-            String href = rt.getLink("self").getHref();
-            // initialize href to front, not to backend
-            rt.getContent().setIdByLink(href);
-            // and store it with Site
-            tags.add(rt.getContent());
-        }
-
-        return tags;
+        return extractTagsFromResponse(respTags);
     }
 
     @RequestMapping("/topsites")
@@ -125,17 +97,38 @@ public class SitesController {
                 });
 
         List<Resource<Site>> resSites = new ArrayList<>(responseEntity.getBody().getContent());
+
+        return extractSitesFromResponse(resSites);
+    }
+
+    public List<Site> extractSitesFromResponse(List<Resource<Site>> resSites) {
         List<Site> sites = new ArrayList<>(resSites.size());
 
         for (Resource<Site> rs : resSites) {
-            String href = rs.getLink("self").getHref();
-            // initialize href to front, not to backend
-            rs.getContent().setIdByLink(href);
+            if (rs.hasLink("self")) {
+                String href = rs.getLink("self").getHref();
+                // initialize href to front, not to backend
+                rs.getContent().setIdByLink(href);
+            }
             // and store it with Site
             sites.add(rs.getContent());
         }
-
         return sites;
+    }
+
+    public List<Tag> extractTagsFromResponse(List<Resource<Tag>> respTags) {
+        List<Tag> tags = new ArrayList<>(respTags.size());
+
+        for (Resource<Tag> rt : respTags) {
+            if (rt.hasLink("self")) {
+                String href = rt.getLink("self").getHref();
+                // initialize href to front, not to backend
+                rt.getContent().setIdByLink(href);
+            }
+            // and store it with Site
+            tags.add(rt.getContent());
+        }
+        return tags;
     }
 
 }
