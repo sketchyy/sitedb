@@ -23,7 +23,7 @@ public class Site {
         hrefToFront = String.format(LINK_TO_FRONT, id);
     }
 
-    protected Site() {
+    public Site() {
     }
 
     public Site(String name, String url) {

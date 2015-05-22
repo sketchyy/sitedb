@@ -52,20 +52,6 @@ public class FavouritesController {
         return restTemplate.exchange(UsersURIs.ALL_FAVOURITES_URI, HttpMethod.PUT, request, String.class, 1);
     }
 
-//    @RequestMapping(value = "/favourite", method = RequestMethod.GET)
-//    @ResponseBody
-//    public Map<String, String> checkFavourite(@RequestParam(value = "site") Integer siteId) {
-//        Map<String,String> result = new HashMap<>();
-//        // Get all favs
-//        RestTemplate restTemplate = RestTemplateCreator.create();
-//        ResponseEntity<Resources<Resource<Site>>> favouritesResp = restTemplate.exchange(RestURIs.ALL_FAVOURITES_URI, HttpMethod.GET, null,
-//                new ParameterizedTypeReference<Resources<Resource<Site>>>() {
-//                }, 1 /* userId */);
-//
-//
-//        return result;
-//    }
-
     @RequestMapping(value = "/favourites/{site}", method = RequestMethod.DELETE)
     public ResponseEntity deleteFavourite(@PathVariable(value = "site") Long siteId) {
         RestTemplate restTemplate = RestTemplateCreator.create();

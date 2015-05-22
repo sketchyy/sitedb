@@ -1,15 +1,26 @@
 package com.sitedb.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
  * Created by sketchyy on 03.05.2015.
  */
 public class Comment {
+    private long id;
+
     private String text;
+
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss", timezone="CET")
     private Date time;
     private User user;
     private Site site;
+
+    public void setIdByLink(String link) {
+        String[] ss = link.split("/");
+        id = Integer.valueOf(ss[ss.length - 1]);
+    }
 
     public Comment(String text, Date time) {
         this.text = text;
@@ -49,6 +60,14 @@ public class Comment {
 
     public void setSite(Site site) {
         this.site = site;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Override

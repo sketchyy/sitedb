@@ -24,7 +24,9 @@ public class UsersURIs {
     public static final String TAGS_BY_SITE_URI = RECOM + "/sites/{siteId}/tags";
 
     // Comments
-    public static final String ALL_COMMENTS = DB_CONTROLLER + "/comments";
+    public static final String ALL_COMMENTS_URI = DB_CONTROLLER + "/comments";
+    public static final String COMMENT_URI = DB_CONTROLLER + "/comments/{id}";
+    public static final String COMMENTS_BY_SITE_URI = DB_CONTROLLER + "/sites/{id}/comments";
 
     // Rating
     public static final String ALL_RATES = DB_CONTROLLER + "/rates";
@@ -41,5 +43,8 @@ public class UsersURIs {
 
     // Authorization
     public static final String LOGIN_PAGE = SESSION + "/login";
+
+    // Users
+    public static final String USER_URI = DB_CONTROLLER + "/users/{userId}";
 
 }

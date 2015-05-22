@@ -1,5 +1,7 @@
 package com.sitedb.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +15,8 @@ public class User {
     private String name;
     private String surname;
     private String email;
+
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private Date birthday;
     private String gender;
     private Set<Site> favourite = new HashSet<>(0);
