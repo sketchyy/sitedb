@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+        >
+<head>
+    <title>Hello World!</title>
+</head>
+<body>
+<h1 th:inline="text">USERSSSS [[${#httpServletRequest.remoteUser}]]!</h1>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+
+<div>
+    <p th:text="${user.name}"></p>
+    <p th:text="${user.surname}"></p>
+</div>
+
+<h1>Favourites</h1>
+<table>
+    <tr>
+        <th>NAME</th>
+        <th>URL</th>
+        <th>DESCRIPTION</th>
+    </tr>
+    <tr th:each="s : ${favourites}">
+        <td><a th:text="${s.name}" th:href="${s.hrefToFront}"></a></td>
+        <td th:text="${s.url}"></td>
+        <td th:text="${s.description}"></td>
+    </tr>
+</table>
+</body>
+</html>

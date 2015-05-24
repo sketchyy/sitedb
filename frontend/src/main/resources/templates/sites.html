@@ -1,21 +1,24 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Sites</title>
 </head>
 <body>
 <h1>Sites!</h1>
-<table>
-    <tr>
-        <th>NAME</th>
-        <th>URL</th>
-        <th>DESCRIPTION</th>
-    </tr>
-    <tr th:each="s : ${sites}">
-        <td><a th:text="${s.name}" th:href="${s.hrefToFront}"></a></td>
-        <td th:text="${s.url}"></td>
-        <td th:text="${s.description}"></td>
-    </tr>
-</table>
+    <div th:if="${userId} != -1" >
+        User = <span th:text="${userId}"></span>
+    </div>
+    <table>
+        <tr>
+            <th>NAME</th>
+            <th>URL</th>
+            <th>DESCRIPTION</th>
+        </tr>
+        <tr th:each="s : ${sites}">
+            <td><a th:text="${s.name}" th:href="${s.hrefToFront}"></a></td>
+            <td th:text="${s.url}"></td>
+            <td th:text="${s.description}"></td>
+        </tr>
+    </table>
 </body>
 </html>

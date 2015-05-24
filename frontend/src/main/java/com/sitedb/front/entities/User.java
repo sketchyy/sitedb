@@ -7,12 +7,14 @@ import java.util.Set;
 /**
  * Created by sketchyy on 03.05.2015.
  */
+
 public class User {
     public static final String LINK_TO_FRONT = "http://localhost:8082/user?id=%d";
 
     private String name;
     private String surname;
     private String email;
+
     private Date birthday;
     private String gender;
     private Set<Site> favourite = new HashSet<>(0);
@@ -20,11 +22,6 @@ public class User {
     private long id;
     private String hrefToFront;
 
-    public void setHrefToFront(String link) {
-        String[] ss = link.split("/");
-        id = Integer.valueOf(ss[ss.length - 1]);
-        hrefToFront = String.format(LINK_TO_FRONT, id);
-    }
 
     public User() {
     }
@@ -95,6 +92,10 @@ public class User {
 
     public String getHrefToFront() {
         return hrefToFront;
+    }
+
+    public void setHrefToFront(String hrefToFront) {
+        this.hrefToFront = hrefToFront;
     }
 
     @Override

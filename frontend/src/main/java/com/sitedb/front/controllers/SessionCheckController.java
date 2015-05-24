@@ -1,7 +1,7 @@
 package com.sitedb.front.controllers;
 
-import com.sitedb.front.RestTemplateCreator;
 import com.sitedb.front.entities.UserID;
+import com.sitedb.front.utils.RestTemplateCreator;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;

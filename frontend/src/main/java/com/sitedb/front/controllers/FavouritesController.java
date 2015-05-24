@@ -1,12 +1,14 @@
 package com.sitedb.front.controllers;
 
-import com.sitedb.front.RestTemplateCreator;
-import com.sitedb.front.FrontURIs;
 import com.sitedb.front.entities.Site;
-import org.springframework.core.ParameterizedTypeReference;
+import com.sitedb.front.utils.FrontURIs;
+import com.sitedb.front.utils.RestTemplateCreator;
+import com.sitedb.front.utils.SessionChecker;
 import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.Resources;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
 import java.util.Collection;
 
@@ -47,7 +50,9 @@ public class FavouritesController {
 //    }
 
     @RequestMapping(value = "/favourites", method = RequestMethod.DELETE)
-    public ResponseEntity deleteFavourite(@RequestParam(value = "site") Long siteId) {
+    public ResponseEntity deleteFavourite(@RequestParam(value = "site") Long siteId,
+                                          HttpServletRequest request) {
+        Long userId = SessionChecker.processIdFromRequest(request);
         RestTemplate restTemplate = RestTemplateCreator.create();
         return restTemplate.exchange(FrontURIs.FAVOURITE_URI, HttpMethod.DELETE, HttpEntity.EMPTY, Void.class, 1, siteId); // todo userid
     }

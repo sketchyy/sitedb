@@ -1,4 +1,4 @@
-package com.sitedb.front;
+package com.sitedb.front.utils;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

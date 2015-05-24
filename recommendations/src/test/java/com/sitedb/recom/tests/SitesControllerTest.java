@@ -4,6 +4,7 @@ import com.sitedb.recom.Application;
 import com.sitedb.recom.controllers.SitesController;
 import com.sitedb.recom.entities.Site;
 import com.sitedb.recom.entities.Tag;
+import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -13,15 +14,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * Created by sketchyy on 21.05.2015.
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-public class SitesControllerTest {
+public class SitesControllerTest extends TestCase {
 
     @Test
     public void sitesExtractorTest() {

@@ -1,7 +1,7 @@
 package com.sitedb.front.controllers;
 
 import com.sitedb.front.entities.Site;
-import com.sitedb.front.entities.Tag;
+import com.sitedb.front.entities.User;
 import com.sitedb.front.utils.FrontURIs;
 import com.sitedb.front.utils.RestTemplateCreator;
 import org.springframework.core.ParameterizedTypeReference;
@@ -16,26 +16,25 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 /**
- * Created by sketchyy on 06.05.2015.
+ * Created by sketchyy on 20.05.2015.
  */
 
 @Controller
-public class TagController {
+public class UsersController {
 
-    @RequestMapping("/tag")
-    public String sites(@RequestParam(value = "id") Long tagId,
+    @RequestMapping("/user")
+    public String sites(@RequestParam(value = "id") Long userId,
                         Model model) {
         RestTemplate restTemplate = RestTemplateCreator.create();
 
-        Tag tag = restTemplate.getForObject(FrontURIs.TAG_URI, Tag.class, tagId);
+        User user = restTemplate.getForObject(FrontURIs.USER_URI, User.class, userId);
 
-        ResponseEntity<List<Site>> sitesByTag = restTemplate.exchange(FrontURIs.SITES_BY_TAG_URI,
+        ResponseEntity<List<Site>> responseEntity = restTemplate.exchange(FrontURIs.ALL_FAVOURITES_URI,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Site>>() {
-                }, tagId);
+                }, userId);
 
-        model.addAttribute("sites", sitesByTag.getBody());
-        model.addAttribute("tag", tag);
-        return "tag";
+        model.addAttribute("user", user);
+        model.addAttribute("favourites", responseEntity.getBody());
+        return "user";
     }
-
 }

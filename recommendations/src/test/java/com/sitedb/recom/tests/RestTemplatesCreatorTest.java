@@ -2,6 +2,7 @@ package com.sitedb.recom.tests;
 
 import com.sitedb.recom.Application;
 import com.sitedb.recom.utils.RestTemplateCreator;
+import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-public class RestTemplatesCreatorTest {
+public class RestTemplatesCreatorTest extends TestCase {
 
     @Test
     public void testRestTemplateCreator () {

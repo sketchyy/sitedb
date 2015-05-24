@@ -1,14 +1,11 @@
 package com.sitedb.front.entities;
 
-import org.springframework.hateoas.Link;
-
 /**
  * Created by sketchyy on 04.05.2015.
  */
 public class Rate {
     private long id;
     private int rate;
-
 
     public Rate() {
     }

@@ -9,9 +9,24 @@
 </head>
 <body>
 
+<!--Header-->
+<div th:if="${user} == null">
+    Hello, guest!
+    <a href="/login">
+        <button>Login</button>
+    </a>
+</div>
+<div th:if="${user} != null">
+    Hello, <span th:text="${user.name}"></span> !
+    <a href="/logout">
+        <button>Logout</button>
+    </a>
+</div>
+
+
 <h1>Site</h1>
 
-<div>
+<div th:if="${user} != null">
     <div th:id="isFav" style="display:none" th:text="${isFav}"></div>
     <button th:id="favButton" type="button" onclick="fav()" th:switch="${isFav}">
         <span th:case="true">Unfavourite!</span>
@@ -33,7 +48,7 @@
 <p th:id="rate" style="display:none" th:text="${rate.rate}"></p>
 
 
-<div class="rating"></div>
+<div th:if="${user} != null" class="rating"></div>
 <div id="avgRate"></div>
 
 <h1>Tags</h1>
@@ -52,7 +67,7 @@
     </tr>
 </table>
 
-<form th:action="@{/comment}" method="post">
+<form th:if="${user} != null" th:action="@{/comment}" method="post">
     <textarea name="comment" cols="40" rows="3"></textarea>
     <input type="hidden" name="site" id="site" th:value="${site.id}"/>
     <!-- TODO ajax post -->

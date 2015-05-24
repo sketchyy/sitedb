@@ -3,8 +3,9 @@ package com.sitedb.front.controllers;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.sitedb.front.RestTemplateCreator;
-import com.sitedb.front.FrontURIs;
+import com.sitedb.front.utils.FrontURIs;
+import com.sitedb.front.utils.RestTemplateCreator;
+import com.sitedb.front.utils.SessionChecker;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,7 +28,10 @@ public class CommentsController {
 
     @RequestMapping(value = "/comment",method = RequestMethod.POST)
     public String postComment(@RequestParam(value = "comment") String comment,
-                            @RequestParam(value = "site") Integer siteId) {
+                                @RequestParam(value = "site") Integer siteId,
+                              HttpServletRequest request) {
+        Long userId = SessionChecker.processIdFromRequest(request);
+
         System.out.println("site = " + siteId);
         System.out.println("comment = " + comment);
 
@@ -38,7 +43,7 @@ public class CommentsController {
         commentNode.put("text", comment);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         commentNode.put("time", df.format(new Date()));
-        commentNode.put("user", "http://localhost:8080/users/1"); //todo: take current user from session service
+        commentNode.put("user", "http://localhost:8080/users/" + userId);
         commentNode.put("site", FrontURIs.ALL_SITES + "/" + siteId);
 
         System.out.println(commentNode);

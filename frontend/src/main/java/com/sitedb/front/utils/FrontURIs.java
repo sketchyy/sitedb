@@ -1,4 +1,4 @@
-package com.sitedb.front;
+package com.sitedb.front.utils;
 
 /**
  * Created by sketchyy on 29.04.2015.
@@ -25,6 +25,7 @@ public class FrontURIs {
 
     // Comments
     public static final String ALL_COMMENTS = DB_CONTROLLER + "/comments";
+    public static final String COMMENTS_BY_SITE_URI = USERS + "/comments?site={site}";
 
     // Rating
     public static final String ALL_RATES = DB_CONTROLLER + "/rates";
@@ -34,7 +35,7 @@ public class FrontURIs {
     public static final String GET_AVG_RATING_URI = DB_CONTROLLER + "/rates/search/getAvgRating?site={siteId}";
 
     // Favourites
-    public static final String ALL_FAVOURITES_URI = DB_CONTROLLER + "/users/{userId}/favourites";
+    public static final String ALL_FAVOURITES_URI = USERS + "/users/{userId}/favourites";
     public static final String FAVOURITE_URI = DB_CONTROLLER + "/users/{userId}/favourites/{favId}";
     public static final String IS_SITE_IN_FAVS_URI = DB_CONTROLLER + "/users/search/isSiteInFavourites?site={siteId}&user={userId}";
 
@@ -42,4 +43,6 @@ public class FrontURIs {
     // Authorization
     public static final String LOGIN_PAGE = SESSION + "/login";
 
+    // Users
+    public static final String USER_URI = USERS + "/users/{userId}";
 }

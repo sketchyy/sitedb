@@ -1,10 +1,10 @@
 package com.sitedb.front.controllers;
 
-import com.sitedb.front.RestTemplateCreator;
-import com.sitedb.front.FrontURIs;
 import com.sitedb.front.entities.*;
+import com.sitedb.front.utils.FrontURIs;
+import com.sitedb.front.utils.RestTemplateCreator;
+import com.sitedb.front.utils.SessionChecker;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpMethod;
@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by sketchyy on 24.04.2015.
@@ -24,10 +27,13 @@ import java.util.*;
 @Controller
 public class SitesController {
 
-    @RequestMapping("/sites")
+    @RequestMapping(value = {"/sites", "/"})
     public String sites(@RequestParam(value = "page", defaultValue = "0") Integer page,
                         @RequestParam(value = "size", defaultValue = "10") Integer size,
+                        HttpServletRequest request,
                         Model model) {
+        User user = SessionChecker.processUserFromRequest(request);
+
         RestTemplate restTemplate = RestTemplateCreator.create();
 
         ResponseEntity<List<Site>> responseEntity = restTemplate.exchange(FrontURIs.ALL_SITES_PAGED,
@@ -35,11 +41,16 @@ public class SitesController {
                 }, page, size);
 
         model.addAttribute("sites", responseEntity.getBody());
+        model.addAttribute("user", user);
         return "sites";
     }
 
     @RequestMapping("/site")
-    public String site(@RequestParam(value = "id") Long siteId, Model model) {
+    public String site(@RequestParam(value = "id") Long siteId,
+                       HttpServletRequest request,
+                       Model model) {
+        User user = SessionChecker.processUserFromRequest(request);
+
         RestTemplate restTemplate = RestTemplateCreator.create();
 //        Map<String, Integer> vars = new HashMap<>();
 //        vars.put("siteId", siteId);
@@ -56,12 +67,19 @@ public class SitesController {
         Collection<Tag> tags = tagsBySiteResponse.getBody();
 
         // load comments
-        String hrefToComments = /*res.getBody().getLink("comments").getHref()*/
-                "http://localhost:8080/sites/" + site.getId() + "/comments";
-        Collection<Comment> comments = loadComments(restTemplate, hrefToComments);
+
+        System.out.println("before");
+        ResponseEntity<List<Comment>> commentsResponse = restTemplate.exchange(FrontURIs.COMMENTS_BY_SITE_URI,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Comment>>() {
+                }, site.getId());
+        Collection<Comment> comments = commentsResponse.getBody();
+        System.out.println("after");
 
         // Does user already rates this site?
-        Rate rate = loadRate(restTemplate, site.getId(), 1); // todo load current user id
+        Rate rate = loadRate(restTemplate, site.getId(), user);
+
+        // Is in favourite?
+        boolean isFav = isInFavourite(restTemplate, siteId, user);
 
         // Load similar sites
         System.out.println("111");
@@ -69,8 +87,6 @@ public class SitesController {
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Site>>() {
                 }, site.getId());
 
-        // Is in favourite?
-        boolean isFav = isInFavourite(restTemplate, siteId, 1); // todo load current user id
 
         System.out.println("SIMILAR : " + similarSites.getBody());
         // add Site and Tags to model
@@ -80,16 +96,26 @@ public class SitesController {
         model.addAttribute("rate", rate);
         model.addAttribute("similar", similarSites.getBody());
         model.addAttribute("isFav", isFav);
+        model.addAttribute("user", user);
         return "site";
     }
 
 
-    private boolean isInFavourite(RestTemplate restTemplate, long siteId, long userId) {
-        Integer resp = restTemplate.getForObject(FrontURIs.IS_SITE_IN_FAVS_URI, Integer.class, siteId, userId);
+    private boolean isInFavourite(RestTemplate restTemplate, long siteId, User user) {
+        // if no user
+        if (user == null) {
+            return false;
+        }
+        Integer resp = restTemplate.getForObject(FrontURIs.IS_SITE_IN_FAVS_URI, Integer.class, siteId, user.getId());
         return resp > 0;
     }
 
-    private Rate loadRate(RestTemplate restTemplate, long siteId, long userId) {
+    private Rate loadRate(RestTemplate restTemplate, long siteId, User user) {
+        // if no user
+        if (user == null) {
+            return new Rate();
+        }
+
         ResponseEntity<Resources<Resource<Rate>>> response
                 = restTemplate.exchange(FrontURIs.FIND_RATE_BY_SITE_AND_USER,
                 HttpMethod.GET,
@@ -97,7 +123,7 @@ public class SitesController {
                 new ParameterizedTypeReference<Resources<Resource<Rate>>>() {
                 },
                 siteId,
-                userId);
+                user.getId());
         List<Resource<Rate>> rates = new ArrayList<>(response.getBody().getContent());
 
         if (rates.isEmpty()) {
@@ -110,34 +136,6 @@ public class SitesController {
         }
 
         return r;
-    }
-
-    private Collection<Comment> loadComments(RestTemplate restTemplate, String hrefToComments) {
-        ResponseEntity<Resources<Resource<Comment>>> commentsResponse = restTemplate.exchange(
-                hrefToComments, HttpMethod.GET, null,
-                new ParameterizedTypeReference<Resources<Resource<Comment>>>() {
-                });
-//        System.out.println("load comments response = " + commentsResponse.getBody());
-
-        Collection<Resource<Comment>> commentsResources = commentsResponse.getBody().getContent();
-        Collection<Comment> comments = new ArrayList<>(commentsResources.size());
-
-        // load user to every comment
-        for (Resource<Comment> comRes : commentsResources) {
-            String linkToUser = comRes.getLink("user").getHref();
-
-            ResponseEntity<Resource<User>> userResponse = restTemplate.exchange(
-                    linkToUser, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<Resource<User>>() {
-                    });
-
-            User u = userResponse.getBody().getContent();
-            u.setHrefToFront(userResponse.getBody().getLink("self").getHref());
-            comRes.getContent().setUser(u);
-
-            comments.add(comRes.getContent());
-        }
-        return comments;
     }
 
     private Collection<Tag> loadTags(RestTemplate restTemplate, String hrefToTags) {

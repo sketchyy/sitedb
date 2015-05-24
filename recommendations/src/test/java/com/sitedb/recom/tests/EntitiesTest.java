@@ -3,12 +3,11 @@ package com.sitedb.recom.tests;
 import com.sitedb.recom.Application;
 import com.sitedb.recom.entities.Site;
 import com.sitedb.recom.entities.Tag;
+import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by sketchyy on 21.05.2015.
@@ -16,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-public class EntitiesTest {
+public class EntitiesTest extends TestCase {
     private final String FRONT_URI = "http://localhost:8082";
     private final String DB_URI = "http://localhost:8080";
 

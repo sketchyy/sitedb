@@ -45,7 +45,7 @@ public class AuthorizeService {
         Cookie cookie = new Cookie("ISDB", session.getSessionId());
 //        cookie.setMaxAge();
         response.addCookie(cookie);
-        return "redirect:" + "http://localhost:8082/hello";
+        return "redirect:" + "http://localhost:8082/sites";
     }
 
 }
