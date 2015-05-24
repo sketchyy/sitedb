@@ -31,12 +31,13 @@ public class RateController {
     @RequestMapping(value = "/rates", method = RequestMethod.POST)
     @ResponseBody
     public Rate setRate(@RequestParam(value = "site") Integer siteId,
-                          @RequestParam(value = "rate") Integer rate) {
+                        @RequestParam(value = "user") Integer userId,
+                        @RequestParam(value = "rate") Integer rate) {
         ObjectMapper objectMapper = objectMapperInit();
 
         ObjectNode rateNode = objectMapper.createObjectNode();
         rateNode.put("rate", rate);
-        rateNode.put("user", "http://localhost:8080/users/1"); //todo: take current user from session service
+        rateNode.put("user", "http://localhost:8080/users/" + userId);
         rateNode.put("site", UsersURIs.ALL_SITES + "/" + siteId);
 
         RestTemplate restTemplate = RestTemplateCreator.create();

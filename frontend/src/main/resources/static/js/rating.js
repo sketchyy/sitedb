@@ -27,7 +27,8 @@ function sendPutRating(score) {
 function sendPostRating(score) {
     var params = {
         rate: score,
-        site: $('#siteId').html()
+        site: $('#siteId').html(),
+        user: $('#userId').html()
     };
 
     $.ajax({

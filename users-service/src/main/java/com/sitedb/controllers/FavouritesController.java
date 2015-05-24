@@ -12,7 +12,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,16 +28,15 @@ import java.util.Collection;
 public class FavouritesController {
 
     @RequestMapping(value = "/favourites", method = RequestMethod.PUT)
-    public ResponseEntity addFavourite(@RequestParam(value = "site") Long siteId) {
+    public ResponseEntity addFavourite(@RequestParam(value = "site") Long siteId,
+                                       @RequestParam(value = "user") Long userId) {
         RestTemplate restTemplate = RestTemplateCreator.create();
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter(Charset.forName("UTF-8")));
-
-        //        rateNode.put("user", "http://localhost:8080/users/1"); //todo: take current user from session service
 
         // Get all favs
         ResponseEntity<Resources<Resource<Site>>> favouritesResp = restTemplate.exchange(UsersURIs.ALL_FAVOURITES_URI, HttpMethod.GET, null,
                 new ParameterizedTypeReference<Resources<Resource<Site>>>() {
-                }, 1); //todo: take current user from session service
+                }, userId);
 
         // Add new link to favourite list
         String siteLinks = buildURIList(favouritesResp.getBody().getContent(), UsersURIs.ALL_SITES + "/" + siteId);
@@ -49,13 +47,14 @@ public class FavouritesController {
         HttpEntity<Object> request = new HttpEntity<>(siteLinks, headers);
 
         System.out.println("LNKS =  \n" + siteLinks);
-        return restTemplate.exchange(UsersURIs.ALL_FAVOURITES_URI, HttpMethod.PUT, request, String.class, 1);
+        return restTemplate.exchange(UsersURIs.ALL_FAVOURITES_URI, HttpMethod.PUT, request, String.class, userId);
     }
 
-    @RequestMapping(value = "/favourites/{site}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteFavourite(@PathVariable(value = "site") Long siteId) {
+    @RequestMapping(value = "/favourites", method = RequestMethod.DELETE)
+    public ResponseEntity deleteFavourite(@RequestParam(value = "site") Long siteId,
+                                          @RequestParam(value = "user") Long userId) {
         RestTemplate restTemplate = RestTemplateCreator.create();
-        return restTemplate.exchange(UsersURIs.FAVOURITE_URI, HttpMethod.DELETE, HttpEntity.EMPTY, Void.class, 1, siteId);
+        return restTemplate.exchange(UsersURIs.FAVOURITE_URI, HttpMethod.DELETE, HttpEntity.EMPTY, Void.class, userId, siteId);
     }
 
     private String buildURIList (Collection<Resource<Site>> sites, String newFavouriteLink) {

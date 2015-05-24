@@ -2,14 +2,21 @@ var USERS_HOST = "http://localhost:8083";
 
 function fav() {
     var siteId = $('#siteId').html();
+    var userId = $('#userId').html();
+    if (userId === null) {
+        return;
+    }
+
     var params = {
-        site: siteId
+        site: siteId,
+        user: userId
     };
 
     if ($('#isFav').html() === 'true') {
+
         // Already in favs, so delete
         $.ajax({
-            url: USERS_HOST + "/favourites/" + siteId /*$.param(params)*/,
+            url: USERS_HOST + "/favourites?" /*+ siteId*/ + $.param(params),
             type: 'DELETE',
             xhrFields: {
                 withCredentials: true

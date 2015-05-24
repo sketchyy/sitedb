@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<!--Header-->
+<!--User profile / logout -->
 <div th:if="${user} == null">
     Hello, guest!
     <a href="/login">
@@ -17,12 +17,13 @@
     </a>
 </div>
 <div th:if="${user} != null">
-    Hello, <span th:text="${user.name}"></span> !
+    Hello, <a th:text="${user.name}" th:href="${user.hrefToFront}"></a>!
+    <span id="userId" style="display: none" th:text="${user.id}"></span>
     <a href="http://localhost:8082/logout   ">
         <button>Logout</button>
     </a>
 </div>
-
+<!--User profile / logout -->
 
 <h1>Site</h1>
 
