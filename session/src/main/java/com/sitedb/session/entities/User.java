@@ -6,20 +6,20 @@ import javax.persistence.*;
  * Created by Alexander on 01.05.2015.
  */
 @Entity
-@Table(name = "UDB_USER")
+@Table(name = "\"UDB_USER\"")
 public class User {
 
     @Id
-    @Column(name = "USER_ID")
+    @Column(name = "\"USER_ID\"")
     private long user_id;
 
-    @Column(name = "LOGIN", nullable = false, unique = true)
+    @Column(name = "\"LOGIN\"", nullable = false, unique = true)
     private String login;
 
-    @Column(name = "PASSWORD", nullable = false)
+    @Column(name = "\"PASSWORD\"", nullable = false)
     private String passwordHash;
 
-    @Column(name = "ROLE", nullable = false)
+    @Column(name = "\"ROLE\"", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 

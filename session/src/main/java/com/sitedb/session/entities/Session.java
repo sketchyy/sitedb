@@ -7,18 +7,18 @@ import java.sql.Timestamp;
  * Created by Alexander on 07.05.2015.
  */
 @Entity
-@Table(name = "UDB_SESSIONS")
+@Table(name = "\"UDB_SESSIONS\"")
 public class Session {
 
     @Id
-    @Column(name = "SESSION_ID")
+    @Column(name = "\"SESSION_ID\"")
     String sessionId;
 
-    @Column(name = "USER_ID")
+    @Column(name = "\"USER_ID\"")
     // TODO many to one?
             Long userId;
 
-    @Column(name = "EXPIRES")
+    @Column(name = "\"EXPIRES\"")
     Timestamp expires;
 
     public String getSessionId() {

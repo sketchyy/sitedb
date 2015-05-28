@@ -32,6 +32,8 @@ public class SessionCheckController {
         for (Cookie cookie : cookies)
             if (cookie.getName().equals("ISDB"))
                 headers.add("Cookie", cookie.getValue());
+
+
         HttpEntity<String> request2 = new HttpEntity<String>(headers);
         try {
             ResponseEntity<UserID> response = restTemplate.exchange(
