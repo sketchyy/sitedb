@@ -37,7 +37,7 @@ public class Site {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "\"SITE_ID\"")
-    @OrderBy("COMMENT_TIME")
+//    @OrderBy(value = "\"COMMENT_TIME\"")
     private Set<Comment> comments = new HashSet<>(0);
 
     protected Site() {
