@@ -7,24 +7,24 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "SDB_RATES")
+@Table(name = "\"SDB_RATES\"")
 public class Rate {
 
     @Id
-    @Column(name = "RATE_ID")
+    @Column(name = "\"RATE_ID\"")
     @GeneratedValue(strategy=GenerationType.AUTO, generator="rate_id_seq")
-    @SequenceGenerator(name="rate_id_seq", sequenceName="SDB_RATES_SEQ", allocationSize = 1)
+    @SequenceGenerator(name="rate_id_seq", sequenceName="\"SDB_RATES_RATE_ID_seq\"", allocationSize = 1)
     private long id;
 
-    @Column(name = "RATE")
+    @Column(name = "\"RATE\"")
     private int rate;
 
     @ManyToOne()
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "\"USER_ID\"")
     private User user;
 
     @ManyToOne()
-    @JoinColumn(name = "SITE_ID")
+    @JoinColumn(name = "\"SITE_ID\"")
     private Site site;
 
     public Rate() {
@@ -33,7 +33,7 @@ public class Rate {
     public Rate(int rate, User user, Site site) {
         this.rate = rate;
         this.user = user;
-        this.site = site;
+//        this.site = site;
     }
 
     public long getId() {

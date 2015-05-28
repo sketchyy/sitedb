@@ -6,7 +6,11 @@
 
     <groupId>com.sitedb</groupId>
     <artifactId>db-controller</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <version>1.0</version>
+    <modules>
+        <module>../tesettt</module>
+    </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -22,10 +26,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.oracle</groupId>-->
+            <!--<artifactId>ojdbc6</artifactId>-->
+            <!--<version>11.2.0</version>-->
+        <!--</dependency>-->
         <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc6</artifactId>
-            <version>11.2.0</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4-1200-jdbc4</version>
         </dependency>
     </dependencies>
 
@@ -48,6 +57,43 @@
                     </jvmArguments>
                 </configuration>-->
             </plugin>
+            <!-- Use antrun:run to deploy to remote server -->
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <dependencies>
+                    <!-- ANTRUN Dependencies -->
+                    <dependency>
+                        <groupId>com.jcraft</groupId>
+                        <artifactId>jsch</artifactId>
+                        <version>0.1.52</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.ant</groupId>
+                        <artifactId>ant-jsch</artifactId>
+                        <version>1.9.4</version>
+                    </dependency>
+                    <!-- ANTRUN Dependencies -->
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <configuration>
+                            <target>
+                                <!-- db-controller 01 -->
+                                <scp file="${basedir}\target\db-controller-1.0.jar" todir="sketchyy:1@192.168.56.61:/home/sketchyy" trust="true"/>
+                                <!-- db-controller 02 -->
+                                <!--<scp file="${basedir}\target\db-controller-1.0.jar" todir="sketchyy:1@192.168.56.62:/home/sketchyy" trust="true"/>-->
+                                <!-- db-controller 03 -->
+                                <!--<scp file="${basedir}\target\db-controller-1.0.jar" todir="sketchyy:1@192.168.56.63:/home/sketchyy" trust="true"/>-->
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 

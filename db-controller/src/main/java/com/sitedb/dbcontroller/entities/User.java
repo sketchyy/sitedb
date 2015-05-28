@@ -12,39 +12,39 @@ import java.util.HashSet;
  */
 
 @Entity
-@Table(name = "SDB_USERS")
+@Table(name = "\"SDB_USERS\"")
 public class User {
 
     @Id
-    @Column(name = "USER_ID")
+    @Column(name = "\"USER_ID\"")
     @GeneratedValue(strategy=GenerationType.AUTO, generator="user_id_gen")
-    @SequenceGenerator(name="user_id_gen", sequenceName="SDB_USERS_SEQ", allocationSize = 1)
+    @SequenceGenerator(name="user_id_gen", sequenceName="\"SDB_USERS_USER_ID_seq\"", allocationSize = 1)
     private long id;
 
-    @Column(name = "NAME")
+    @Column(name = "\"NAME\"")
     private String name;
 
-    @Column(name = "SURNAME")
+    @Column(name = "\"SURNAME\"")
     private String surname;
 
-    @Column(name = "EMAIL")
+    @Column(name = "\"EMAIL\"")
     private String email;
 
-    @Column(name = "BIRTHDAY")
+    @Column(name = "\"BIRTHDAY\"")
     @Temporal(TemporalType.DATE)
     private Date birthday;
 
-    @Column(name = "GENDER")
+    @Column(name = "\"GENDER\"")
     private String gender;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "SDB_FAVOURITES",
+            name = "\"SDB_FAVOURITES\"",
             joinColumns = {
-                    @JoinColumn(name = "USER_ID", nullable = false, updatable = false)
+                    @JoinColumn(name = "\"USER_ID\"", nullable = false, updatable = false)
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "SITE_ID", nullable = false, updatable = false
+                    @JoinColumn(name = "\"SITE_ID\"", nullable = false, updatable = false
                     )})
     private Collection<Site> favourites = new HashSet<>(0);
 

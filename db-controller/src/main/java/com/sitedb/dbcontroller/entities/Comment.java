@@ -8,28 +8,28 @@ import java.util.Date;
  */
 
 @Entity
-@Table(name = "SDB_COMMENT")
+@Table(name = "\"SDB_COMMENTS\"")
 public class Comment {
 
     @Id
-    @Column(name = "COMMENT_ID")
+    @Column(name = "\"COMMENT_ID\"")
     @GeneratedValue(strategy=GenerationType.AUTO, generator="comm_id_gen")
-    @SequenceGenerator(name="comm_id_gen", sequenceName="SDB_COMMENT_SEQ", allocationSize = 1)
+    @SequenceGenerator(name="comm_id_gen", sequenceName="\"SDB_COMMENTS_COMMENT_ID_seq\"", allocationSize = 1)
     private long id;
 
-    @Column(name = "TEXT")
+    @Column(name = "\"TEXT\"")
     private String text;
 
-    @Column(name = "COMMENT_TIME")
+    @Column(name = "\"COMMENT_TIME\"")
     @Temporal(TemporalType.TIMESTAMP)
     private Date time;
 
     @ManyToOne()
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "\"USER_ID\"")
     private User user;
 
     @ManyToOne()
-    @JoinColumn(name = "SITE_ID")
+    @JoinColumn(name = "\"SITE_ID\"")
     private Site site;
 
     public Comment(String text, Date time) {

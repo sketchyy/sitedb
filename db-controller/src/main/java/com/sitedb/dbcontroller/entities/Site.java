@@ -9,34 +9,34 @@ import java.util.Set;
  */
 
 @Entity
-@Table(name = "SDB_SITES")
+@Table(name = "\"SDB_SITES\"")
 public class Site {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "site_id_generator")
-    @SequenceGenerator(name = "site_id_generator", sequenceName = "SDB_SITES_SEQ", allocationSize = 1)
-    @Column(name = "SITE_ID")
+    @SequenceGenerator(name = "site_id_generator", sequenceName = "\"SDB_SITES_SITE_ID_seq\"", allocationSize = 1)
+    @Column(name = "\"SITE_ID\"")
     private long id;
-    @Column(name = "NAME")
+    @Column(name = "\"NAME\"")
     private String name;
-    @Column(name = "URL")
+    @Column(name = "\"URL\"")
     private String url;
-    @Column(name = "DESCRIPTION")
+    @Column(name = "\"DESCRIPTION\"")
     private String description;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "SDB_SITES_TAGS",
+            name = "\"SDB_SITES_TAGS\"",
             joinColumns = {
-                    @JoinColumn(name = "SITE_ID", nullable = false, updatable = false)
+                    @JoinColumn(name = "\"SITE_ID\"", nullable = false, updatable = false)
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "TAG_ID", nullable = false, updatable = false
+                    @JoinColumn(name = "\"TAG_ID\"", nullable = false, updatable = false
                     )})
     private Set<Tag> tags = new HashSet<>(0);
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SITE_ID")
+    @JoinColumn(name = "\"SITE_ID\"")
     @OrderBy("COMMENT_TIME")
     private Set<Comment> comments = new HashSet<>(0);
 
@@ -100,4 +100,5 @@ public class Site {
     public String toString() {
         return String.format("Site[id=%d, name=%s, url=%s", id, name, url);
     }
+
 }

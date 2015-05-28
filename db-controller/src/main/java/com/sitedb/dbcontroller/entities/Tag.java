@@ -9,15 +9,15 @@ import java.util.Set;
  */
 
 @Entity
-@Table(name = "SDB_TAGS")
+@Table(name = "\"SDB_TAGS\"")
 public class Tag {
 
     @Id
-    @Column(name = "TAG_ID")
+    @Column(name = "\"TAG_ID\"")
     @GeneratedValue(strategy=GenerationType.AUTO, generator="tag_id_generator")
-    @SequenceGenerator(name="tag_id_generator", sequenceName="SDB_TAGS_SEQ", allocationSize = 1)
+    @SequenceGenerator(name="tag_id_generator", sequenceName="\"SDB_TAGS_TAG_ID_seq\"", allocationSize = 1)
     private long id;
-    @Column(name = "NAME")
+    @Column(name = "\"NAME\"")
     private String name;
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
     private Set<Site> sites = new HashSet<>(0);
@@ -42,13 +42,13 @@ public class Tag {
         this.name = name;
     }
 
-    public Set<Site> getSites() {
-        return sites;
-    }
-
-    public void setSites(Set<Site> sites) {
-        this.sites = sites;
-    }
+//    public Set<Site> getSites() {
+//        return sites;
+//    }
+//
+//    public void setSites(Set<Site> sites) {
+//        this.sites = sites;
+//    }
 
     public Tag() {
     }
