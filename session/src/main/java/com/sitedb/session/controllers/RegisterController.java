@@ -4,6 +4,7 @@ import com.sitedb.session.entities.Role;
 import com.sitedb.session.entities.User;
 import com.sitedb.session.entities.UserInfo;
 import com.sitedb.session.security.UserRepository;
+import com.sitedb.session.utils.SessionURI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +29,7 @@ public class RegisterController {
     @Autowired
     UserRepository userRepository;
 
-    public final static String URI = "http://localhost:8080/users/search/findByEmail?email={email}";
+    public final static String URI = SessionURI.DbControllerFindByEmail;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String RegisterUser(@RequestParam("login") String login,
@@ -38,18 +39,22 @@ public class RegisterController {
                                @RequestParam("email") String email,
                                @RequestParam("birthday") String birthday,
                                @RequestParam("gender") String gender) {
+        System.out.println(login);
+        System.out.println(password);
+        System.out.println(name);
+        System.out.println(birthday);
         Date date = null;
         try {
             date = new SimpleDateFormat("dd/MM/yyyy").parse(birthday);
         } catch (ParseException e) {
             System.out.println("Bad date");
             e.printStackTrace();
-            return "redirect:" + "http://localhost:8082/register?baddate";
+            return "redirect:" + SessionURI.FrontBadBirthday;
         }
         UserInfo userInfo = new UserInfo(name, surname, email, date, gender);
         HttpEntity<UserInfo> httpEntity = new HttpEntity<>(userInfo);
         RestTemplate restTemplate = RestTemplateCreator.create();
-        ResponseEntity<Long> id = restTemplate.exchange("http://localhost:8080/users", HttpMethod.POST, httpEntity, Long.class);
+        ResponseEntity<Long> id = restTemplate.exchange(SessionURI.DbControllerUsers, HttpMethod.POST, httpEntity, Long.class);
         System.out.println(id.toString());
         HttpHeaders httpHeaders1 = new HttpHeaders();
         httpHeaders1.add("EMAIL", email);
@@ -75,8 +80,8 @@ public class RegisterController {
             userRepository.save(user);
         } catch (Exception ex) {
             ex.printStackTrace();
-            return "redirect:" + "http://localhost:8082/register?userexist";
+            return "redirect:" + SessionURI.FrontUserExist;
         }
-        return "redirect:" + "http://localhost:8082/success";
+        return "redirect:" + SessionURI.FrontSuccessReg;
     }
 }
